@@ -1,5 +1,5 @@
 
-var expect = require('expect');
+var expect = require('chai').expect;
 var mergeSources = require('../mergesources');
 
 describe('mergeSources', function() {
@@ -8,6 +8,6 @@ describe('mergeSources', function() {
       { src: 'foo' },
       { src: ['bar', 'baz'] }
     ]);
-    expect(out).toEqual(['foo', 'bar', 'baz']);
+    expect(out).to.deep.equal(['foo', 'bar', 'baz']);
   });
 });
