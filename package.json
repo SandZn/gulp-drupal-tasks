@@ -1,0 +1,38 @@
+{
+  "name": "lastcall-gulp-drupal-tasks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-files": "^1.4.0",
+    "eslint": "^3.14.1",
+    "jest": "^18.1.0"
+  },
+  "dependencies": {
+    "ajv": "^4.11.2",
+    "bower": "^1.8.0",
+    "child-process-promise": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-behat": "^0.6.5",
+    "gulp-concat": "^2.6.1",
+    "gulp-csso": "^2.0.0",
+    "gulp-eslint": "^3.0.1",
+    "gulp-imagemin": "^3.1.1",
+    "gulp-minify": "0.0.14",
+    "gulp-phpcs": "^1.4.0",
+    "gulp-phplint": "^0.3.4",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.4.0",
+    "gulp-util": "^3.0.8",
+    "merge-stream": "^1.0.1",
+    "phantomas": "^1.18.0"
+  }
+}
