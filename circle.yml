@@ -2,4 +2,4 @@ machine:
   node:
     version: 6.9.1
   environment:
-    JEST_JUNIT_OUTPUT: "$CIRCLE_ARTIFACTS/jest.xml"
+    JEST_JUNIT_OUTPUT: "$CIRCLE_TEST_REPORTS/jest.xml"
