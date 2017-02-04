@@ -1,0 +1,10 @@
+default:
+  suites:
+    default:
+      contexts:
+        - FeatureContext
+    passing:
+      paths: ['%paths.base%/features/passing.feature']
+    failing:
+      paths: ['%paths.base%/features/failing.feature']
+
