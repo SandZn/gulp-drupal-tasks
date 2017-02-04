@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "ajv": "^4.11.2",
+    "ajv-keywords": "^1.5.1",
     "bower": "^1.8.0",
     "child-process-promise": "^2.2.0",
     "gulp": "^3.9.1",
