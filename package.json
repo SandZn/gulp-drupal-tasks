@@ -38,7 +38,8 @@
     "gulp-util": "^3.0.8",
     "lodash.omit": "^4.5.0",
     "merge-stream": "^1.0.1",
-    "phantomas": "^1.18.0"
+    "phantomas": "^1.18.0",
+    "through2": "^2.0.3"
   },
   "jest": {
     "testResultsProcessor": "./node_modules/jest-junit"
