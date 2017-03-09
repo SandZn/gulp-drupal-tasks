@@ -20,8 +20,6 @@
     "rimraf": "^2.5.4"
   },
   "dependencies": {
-    "ajv": "^4.11.2",
-    "ajv-keywords": "^1.5.1",
     "bower": "^1.8.0",
     "child-process-promise": "^2.2.0",
     "gulp": "^3.9.1",
@@ -37,7 +35,6 @@
     "gulp-sourcemaps": "^2.4.0",
     "gulp-util": "^3.0.8",
     "lodash.omit": "^4.5.0",
-    "merge-stream": "^1.0.1",
     "phantomas": "^1.18.0",
     "through2": "^2.0.3"
   },
