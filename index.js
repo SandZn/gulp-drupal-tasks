@@ -1,42 +1,50 @@
 'use strict';
-var tasks = { install: {}, check: {}, test: {}, build: {} };
-tasks.install.composer = require('./lib/install/composer');
-tasks.install.bower = require('./lib/install/bower');
+var tasks = require('./lib');
 
-tasks.check.composer = require('./lib/check/composer');
-tasks.check.phplint = require('./lib/check/phplint');
-tasks.check.phpcs = require('./lib/check/phpcs');
-tasks.check.eslint = require('./lib/check/eslint');
+var subtaskFactory = require('./lib/subtask').factory;
 
-tasks.test.behat = require('./lib/test/behat');
-tasks.test.backstop = require('./lib/test/backstop');
-tasks.test.phantomas = require('./lib/test/phantomas');
+module.exports = function (gulp, config, opts) {
+  var describedTask = function(task) {
+    this.task(task.displayName, task.description, task, {options: task.options});
+  }.bind(gulp);
 
-tasks.build.scss = require('./lib/build/scss');
-tasks.build.js = require('./lib/build/js');
-tasks.build.copy = require('./lib/build/copy');
+  var metaTask = function(prefix, description) {
+    var subtaskKeys = Object.keys(this.tasks).filter(function(key) {
+      // Find only subtasks that are direct descendents, not second level.
+      // Ex: given a prefix of `build`, only return build:scss, not build:scss:libs
+      return key.indexOf(prefix + ':') === 0 && key.slice(prefix.length + 1).indexOf(':') === -1;
+    });
+    this.task(prefix, description, subtaskKeys);
+  }.bind(gulp);
 
-module.exports = function (config, opts) {
-  return {
-    install: {
-      composer: tasks.install.composer(config, opts),
-      bower: tasks.install.bower(config, opts)
-    },
-    check: {
-      composer: tasks.check.composer(config, opts),
-      phplint: tasks.check.phplint(config, opts),
-      phpcs: tasks.check.phpcs(config, opts),
-      eslint: tasks.check.eslint(config, opts)
-    },
-    test: {
-      behat: tasks.test.behat(config, opts),
-      backstop: tasks.test.backstop(config, opts),
-      phantomas: tasks.test.phantomas(config, opts)
-    },
-    build: {
-      scss: tasks.build.scss(config, opts),
-      js: tasks.build.js(config, opts),
-      copy: tasks.build.copy(config, opts)
-    }
-  };
-};
+  describedTask(tasks.install.composer({}, opts));
+  describedTask(tasks.install.bower({}, opts));
+  describedTask(tasks.check.composer({}, opts));
+  describedTask(tasks.check.phplint({
+    src: config.phpCheck
+  }, opts));
+  describedTask(tasks.check.phpcs({
+    src: config.phpCheck,
+  }, opts));
+  describedTask(tasks.check.eslint({
+    src: config.jsCheck
+  }, opts));
+
+  var scssTasks = subtaskFactory(tasks.build.scss, config.scss, opts);
+  var jsTasks = subtaskFactory(tasks.build.js, config.js, opts);
+  var copyTasks = subtaskFactory(tasks.build.copy, config.copy, opts);
+  scssTasks.forEach(describedTask);
+  jsTasks.forEach(describedTask);
+  copyTasks.forEach(describedTask);
+
+  describedTask(tasks.test.behat({}, opts));
+  describedTask(tasks.test.phantomas({}, opts));
+
+  metaTask('install', 'Run all install tasks.');
+  metaTask('build:scss', 'Build CSS from SCSS');
+  metaTask('build:js', 'Build JS files');
+  metaTask('build:copy', 'Copy source files and minify images');
+  metaTask('build', 'Run all build tasks.');
+  metaTask('check', 'Run all check tasks.');
+  metaTask('test', 'Run all test steps.');
+}
