@@ -5,7 +5,7 @@ var subtaskFactory = require('./lib/subtask').factory;
 
 module.exports = function (gulp, config, opts) {
   var describedTask = function(task) {
-    this.task(task.displayName, task.description, task, {options: task.options});
+    this.task(task.displayName, task.description, task, { options: task.options });
   }.bind(gulp);
 
   var metaTask = function(prefix, description) {
@@ -47,4 +47,4 @@ module.exports = function (gulp, config, opts) {
   metaTask('build', 'Run all build tasks.');
   metaTask('check', 'Run all check tasks.');
   metaTask('test', 'Run all test steps.');
-}
+};
