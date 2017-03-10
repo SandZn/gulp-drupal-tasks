@@ -2,7 +2,7 @@ machine:
   node:
     version: 6.9.1
   php:
-    version: 7.0.1
+    version: 7.0.4
   environment:
     JEST_JUNIT_OUTPUT: "$CIRCLE_TEST_REPORTS/jest.xml"
 
