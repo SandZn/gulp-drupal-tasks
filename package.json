@@ -28,6 +28,7 @@
     "gulp-concat": "^2.6.1",
     "gulp-csso": "^2.0.0",
     "gulp-eslint": "^3.0.1",
+    "gulp-help": "^1.6.1",
     "gulp-minify": "0.0.15",
     "gulp-phpcs": "^1.4.0",
     "gulp-phplint": "^0.3.4",
