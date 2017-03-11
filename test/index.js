@@ -30,16 +30,9 @@ var opts = { opt1: true };
 describe('Configured tasks', function() {
   factory(gulp, config, opts);
 
-  it('Should have a configured install:composer task', function() {
-    var task = gulp.tasks['install:composer'];
-    checkTask(task, {
-      src: '.'
-    }, { opt1: true });
-  });
-
   it('Should have a configured install:composer task', checkTask.bind(checkTask,
     gulp.tasks['install:composer'],
-    { src: '.' },
+    { src: './composer.json' },
     { opt1: true }
   ));
 
@@ -56,7 +49,7 @@ describe('Configured tasks', function() {
 
   it('Should have a configured check:composer task', checkTask.bind(null,
     gulp.tasks['check:composer'],
-    { src: '.' },
+    { src: './composer.json' },
     { opt1: true }
   ));
 
