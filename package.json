@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "jest": "jest",
-    "test": "eslint . && mocha --timeout=9000 './**/__tests__/*.js'"
+    "test": "eslint . && mocha"
   },
   "author": "",
   "license": "ISC",
