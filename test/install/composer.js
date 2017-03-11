@@ -1,5 +1,5 @@
 
-var factory = require('../composer');
+var factory = require('../../lib/install/composer');
 var path = require('path');
 var rimraf = require('rimraf');
 var chai = require('chai');
@@ -10,12 +10,12 @@ chai.use(chaiFiles);
 var expect = chai.expect;
 var dir = chaiFiles.dir;
 
-var inpath = path.join(__dirname, '../../__fixtures');
-var outpath = path.join(__dirname, '../../__fixtures/vendor');
+var inpath = path.join(__dirname, '../../fixtures');
+var outpath = path.join(__dirname, '../../fixtures/vendor');
 
 describe('Composer task', function() {
-  afterEach(rimraf.bind(null, outpath));
-  beforeEach(rimraf.bind(null, outpath));
+  afterEach(rimraf.bind(null, outpath, {}));
+  beforeEach(rimraf.bind(null, outpath, {}));
 
   it('Should should fall back to a default config', function() {
     var task = factory();
@@ -43,6 +43,14 @@ describe('Composer task', function() {
 
     task(function() {
       expect(dir(outpath)).to.exist;
+      done();
+    });
+  });
+
+  it('Should fail if there is an error', function() {
+    var task = factory({ src: path.join(inpath, 'nonexistent') });
+    task(function(err) {
+      expect(err).to.be.an.instanceof(PluginError);
       done();
     });
   });

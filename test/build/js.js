@@ -1,5 +1,5 @@
 
-var factory = require('../js');
+var factory = require('../../lib/build/js');
 var rimraf = require('rimraf');
 var path = require('path');
 var chai = require('chai');
@@ -10,12 +10,12 @@ chai.use(chaiFiles);
 var expect = chai.expect;
 var file = chaiFiles.file;
 
-var outpath = path.join(__dirname, '../../__out-fixtures');
-var inpath = path.join(__dirname, '../../__fixtures');
+var outpath = path.join(__dirname, '../../out-fixtures');
+var inpath = path.join(__dirname, '../../fixtures');
 
 describe('Javascript build task', function() {
-  beforeEach(rimraf.bind(null, outpath));
-  afterEach(rimraf.bind(null, outpath));
+  beforeEach(rimraf.bind(null, outpath, {}));
+  afterEach(rimraf.bind(null, outpath, {}));
 
   it('Should do nothing if it is called with an empty config', function() {
     var stream = factory()();
@@ -25,11 +25,29 @@ describe('Javascript build task', function() {
   it('Should fail on an invalid config or opts being passed', function() {
     expect(factory.bind(factory, '')).to.throw(PluginError);
     expect(factory.bind(factory, {}, '')).to.throw(PluginError);
+    expect(factory.bind(null, {
+      src: [],
+      min: ''
+    })).to.throw(PluginError);
+    expect(factory.bind(null, {
+      src: [],
+      maps: {}
+    })).to.throw(PluginError);
+    expect(factory.bind(null, {
+      src: [],
+      concat: {}
+    })).to.throw(PluginError);
   });
 
   it('Should use the default config', function() {
     var task = factory();
-    expect(task._config).to.eql({ src: [], dest: null, concat: false, min: false, maps: false });
+    expect(task._config).to.eql({
+      src: [],
+      dest: null,
+      concat: false,
+      min: false,
+      maps: false
+    });
     expect(task._opts).to.eql({});
   });
 
@@ -44,7 +62,7 @@ describe('Javascript build task', function() {
       src: path.join(inpath, 'fixture.js'),
       dest: outpath,
     })();
-    stream.on('error', done.fail);
+    stream.on('error', done);
     stream.on('end', function() {
       expect(file(path.join(outpath, 'fixture.js'))).to.exist;
       done();
@@ -58,7 +76,7 @@ describe('Javascript build task', function() {
       dest: outpath,
       maps: './',
     })();
-    stream.on('error', done.fail);
+    stream.on('error', done);
     stream.on('end', function() {
       var compiledFile = file(path.join(outpath, 'fixture.js'));
       expect(compiledFile).to.exist;
@@ -91,7 +109,7 @@ describe('Javascript build task', function() {
       dest: outpath,
       concat: 'concat.js',
     })();
-    stream.on('error', done.fail);
+    stream.on('error', done);
     stream.on('end', function() {
       var concatFile = file(path.join(outpath, 'concat.js'));
       expect(concatFile).to.exist;
@@ -108,7 +126,7 @@ describe('Javascript build task', function() {
       maps: './',
       min: true,
     })();
-    stream.on('error', done.fail);
+    stream.on('error', done);
     stream.on('end', function() {
       var srcFile = file(path.join(outpath, 'fixture.js'));
       var minFile = file(path.join(outpath, 'fixture.min.js'));

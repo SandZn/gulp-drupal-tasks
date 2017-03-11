@@ -1,12 +1,12 @@
 
 var path = require('path');
-var factory = require('../phplint');
+var factory = require('../../lib/check/phpcs');
 var expect = require('chai').expect;
 var PluginError = require('gulp-util').PluginError;
 
-var inpath = path.join(__dirname, '../../__fixtures');
+var inpath = path.join(__dirname, '../../fixtures');
 
-describe('PHPLint Task', function() {
+describe('PHPCS Task', function() {
 
   it('Should do nothing if it is called with an empty config', function() {
     var stream = factory()();
@@ -20,7 +20,7 @@ describe('PHPLint Task', function() {
 
   it('Should use the default config', function() {
     var task = factory();
-    expect(task._config).to.eql({ src: [], bin: '' });
+    expect(task._config).to.eql({ src: [] });
     expect(task._opts).to.eql(undefined);
   });
 
@@ -36,10 +36,12 @@ describe('PHPLint Task', function() {
     })();
     stream.on('error', function(err) {
       expect(err).to.be.instanceOf(PluginError);
-      expect(err.message).to.contain('syntax error, unexpected');
+      expect(err.message).to.contain('PHP Code Sniffer failed on');
       done();
     });
-    stream.on('end', done.fail.bind(null, new Error('Expected an error to be thrown')));
+    stream.on('end', function() {
+      done(new Error('Expected an error to be thrown'));
+    });
     stream.resume();
   });
 });

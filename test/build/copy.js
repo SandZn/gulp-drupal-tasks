@@ -1,5 +1,5 @@
 
-var factory = require('../copy');
+var factory = require('../../lib/build/copy');
 var path = require('path');
 var rimraf = require('rimraf');
 var chai = require('chai');
@@ -10,12 +10,12 @@ chai.use(chaiFiles);
 var expect = chai.expect;
 var file = chaiFiles.file;
 
-var outpath = path.join(__dirname, '../../__out-fixtures');
-var inpath = path.join(__dirname, '../../__fixtures');
+var outpath = path.join(__dirname, '../../out-fixtures');
+var inpath = path.join(__dirname, '../../fixtures');
 
 describe('Copy task', function() {
-  beforeEach(rimraf.bind(null, outpath));
-  afterEach(rimraf.bind(null, outpath));
+  beforeEach(rimraf.bind(null, outpath, {}));
+  afterEach(rimraf.bind(null, outpath, {}));
 
   it('Should do nothing if it is called with an empty config', function() {
     var stream = factory()();
@@ -44,7 +44,7 @@ describe('Copy task', function() {
       src: path.join(inpath, 'fixture.txt'),
       dest: outpath
     })();
-    stream.on('error', done.fail);
+    stream.on('error', done);
     stream.on('end', function() {
       expect(file(path.join(outpath, 'fixture.txt'))).to.exist;
       done();
@@ -58,7 +58,7 @@ describe('Copy task', function() {
       imagemin: true,
       dest: outpath
     })();
-    stream.on('error', done.fail);
+    stream.on('error', done);
     stream.on('end', function() {
       var originalFile = file(path.join(inpath, 'fixture.png'));
       var optimizedFile = file(path.join(outpath, 'fixture.png'));

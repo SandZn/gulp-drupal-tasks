@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "jest": "jest",
-    "test": "eslint . && jest"
+    "test": "eslint . && mocha"
   },
   "author": "",
   "license": "ISC",
@@ -15,8 +14,9 @@
     "chai-files": "^1.4.0",
     "eslint": "^3.14.1",
     "gulp-imagemin": "^3.1.1",
-    "jest": "^18.1.0",
-    "jest-junit": "^1.1.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.2.0",
+    "mocha-junit-reporter": "^1.13.0",
     "rimraf": "^2.5.4"
   },
   "dependencies": {
@@ -39,10 +39,5 @@
     "npm-which": "^3.0.1",
     "phantomas": "^1.18.0",
     "through2": "^2.0.3"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "verbose": true,
-    "testResultsProcessor": "./node_modules/jest-junit"
   }
 }

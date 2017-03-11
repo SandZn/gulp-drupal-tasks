@@ -1,10 +1,10 @@
 
 var path = require('path');
-var factory = require('../eslint');
+var factory = require('../../lib/check/eslint');
 var expect = require('chai').expect;
 var PluginError = require('gulp-util').PluginError;
 
-var inpath = path.join(__dirname, '../../__fixtures');
+var inpath = path.join(__dirname, '../../fixtures');
 
 describe('ESLint Task', function() {
 
@@ -43,7 +43,9 @@ describe('ESLint Task', function() {
       expect(err.message).to.equal('Failed with 1 error');
       done();
     });
-    stream.on('end', done.fail.bind(null, new Error('Expected an error to be thrown')));
+    stream.on('end', function() {
+      done(new Error('Expected an error to be thrown'));
+    });
     stream.resume();
   });
 
@@ -54,7 +56,7 @@ describe('ESLint Task', function() {
         path.join(inpath, '*.stillnonexistent')
       ]
     })();
-    stream.on('error', done.fail);
+    stream.on('error', done);
     stream.on('end', done);
     stream.resume();
   });
@@ -65,7 +67,7 @@ describe('ESLint Task', function() {
       rules: { 'no-extend-native': 0 },
     })();
 
-    stream.on('error', done.fail);
+    stream.on('error', done);
     stream.on('end', done);
     stream.resume();
   });

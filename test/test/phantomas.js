@@ -1,40 +1,39 @@
 
 var path = require('path');
-var factory = require('../phantomas');
+var factory = require('../../lib/test/phantomas');
 var http = require('http');
 var rimraf = require('rimraf');
 var expect = require('chai').expect;
 var PluginError = require('gulp-util').PluginError;
 
-var inpath = path.join(__dirname, '../../__fixtures');
-var outpath = path.join(__dirname, '../../__out-fixtures');
+var inpath = path.join(__dirname, '../../fixtures');
+var outpath = path.join(__dirname, '../../out-fixtures');
 
 describe('Phantomas Task', function() {
-
   var server = http.createServer(function(req, res) {
     res.setHeader('Content-Type', 'text/html');
     res.writeHead(200);
     switch (req.url) {
       case '/bigpage.html':
-        res.end('<!html><body><img src="/foo.jpg" /><img src="/bar.jpg" /><img src="/baz.jpg" />');
+        res.end('<!html><body><img src="/foo.jpg" /></body>');
         break;
       default:
         res.end('<!html><body></body>');
     }
   });
 
-  beforeAll(function(done) {
+  before(function(done) {
     server.listen(9763, function() {
       done();
     });
   });
-  afterAll(function(done) {
+  after(function(done) {
     server.close(function() {
       done();
     });
   });
-  beforeEach(rimraf.bind(null, outpath));
-  afterEach(rimraf.bind(null, outpath));
+  beforeEach(rimraf.bind(null, outpath, {}));
+  afterEach(rimraf.bind(null, outpath, {}));
 
   it('Should do nothing if it is called with an empty config', function() {
     var stream = factory()();
@@ -48,7 +47,10 @@ describe('Phantomas Task', function() {
 
   it('Should use the default config', function() {
     var task = factory();
-    expect(task._config).to.eql({ src: [], bin: './node_modules/.bin/phantomas' });
+    expect(task._config).to.eql({
+      src: [],
+      bin: './node_modules/.bin/phantomas'
+    });
     expect(task._opts).to.eql({});
   });
 
@@ -63,10 +65,10 @@ describe('Phantomas Task', function() {
       src: path.join(inpath, 'phantomas.yaml'),
       silent: true,
     })();
-    stream.on('error', done.fail);
+    stream.on('error', done);
     stream.on('end', done);
     stream.resume();
-  }, 9000);
+  });
 
   it('Should fail if the performance budget is exceeded', function(done) {
     var task = factory({
@@ -74,10 +76,14 @@ describe('Phantomas Task', function() {
       silent: true,
     });
     var stream = task();
-    stream.on('error', done);
-    stream.on('end', done.fail.bind(null, new Error('Task did not fail.')));
+    stream.on('error', function() {
+      done();
+    });
+    stream.on('end', function() {
+      done(new Error('Task did not fail.'));
+    });
     stream.resume();
-  }, 9000);
+  });
 
 //  it('Should copy report files to the destination', function(done) {
 //    var stream = factory({

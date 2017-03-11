@@ -1,11 +1,11 @@
 
 var path = require('path');
-var factory = require('../behat');
+var factory = require('../../lib/test/behat');
 var which = require('which');
 var expect = require('chai').expect;
 var PluginError = require('gulp-util').PluginError;
 
-var inpath = path.join(__dirname, '../../__fixtures');
+var inpath = path.join(__dirname, '../../fixtures');
 
 describe('Behat Task', function() {
 
@@ -33,7 +33,7 @@ describe('Behat Task', function() {
       suite: 'passing',
       silent: true,
     })();
-    stream.on('error', done.fail);
+    stream.on('error', done);
     stream.on('end', done);
     stream.resume();
   });
@@ -45,8 +45,12 @@ describe('Behat Task', function() {
       suite: 'failing',
       silent: true,
     })();
-    stream.on('error', done);
-    stream.on('end', done.fail.bind(null, new Error('Task did not fail.')));
+    stream.on('error', function() {
+      done();
+    });
+    stream.on('end', function() {
+      throw new Error('Task did not fail.');
+    });
     stream.resume();
   });
 });
