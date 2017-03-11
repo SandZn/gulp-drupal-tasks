@@ -4,10 +4,12 @@ var tasks = require('./lib');
 var subtaskFactory = require('./lib/subtask').factory;
 
 module.exports = function (gulp, config, opts) {
-  var describedTask = function(task) {
+  var describedTask = function(task, deps) {
+    deps = deps || [];
     this.task(
       task.displayName,
       task.description,
+      deps,
       task,
       { options: task.options }
     );
@@ -36,12 +38,15 @@ module.exports = function (gulp, config, opts) {
     src: config.jsCheck
   }, opts));
 
+  function addSubtask(subtask) {
+    describedTask(subtask);
+  }
   var scssTasks = subtaskFactory(tasks.build.scss, config.scss, opts);
   var jsTasks = subtaskFactory(tasks.build.js, config.js, opts);
   var copyTasks = subtaskFactory(tasks.build.copy, config.copy, opts);
-  scssTasks.forEach(describedTask);
-  jsTasks.forEach(describedTask);
-  copyTasks.forEach(describedTask);
+  scssTasks.forEach(addSubtask);
+  jsTasks.forEach(addSubtask);
+  copyTasks.forEach(addSubtask);
 
   describedTask(tasks.test.behat({}, opts));
   describedTask(tasks.test.phantomas({}, opts));
@@ -53,4 +58,6 @@ module.exports = function (gulp, config, opts) {
   metaTask('build', 'Run all build tasks.');
   metaTask('check', 'Run all check tasks.');
   metaTask('test', 'Run all test steps.');
+
+  describedTask(tasks.build.watch(gulp, opts), ['build']);
 };
