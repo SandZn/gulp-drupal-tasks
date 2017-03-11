@@ -10,6 +10,10 @@ var config = {
     libs: {
       src: './foo',
       dest: './bar',
+    },
+    theme: {
+      src: './baz',
+      dest: './bar',
     }
   },
   js: {
@@ -83,7 +87,7 @@ describe('Configured tasks', function() {
   ));
   it('Should have a meta build:scss task', checkMetaTask.bind(null,
     gulp.tasks['build:scss'],
-    ['build:scss:libs']
+    ['build:scss:libs', 'build:scss:theme']
   ));
 
   it('Should have a configured build:js:libs task', checkTask.bind(null,
@@ -135,6 +139,12 @@ describe('Configured tasks', function() {
     gulp.tasks['test'],
     ['test:behat', 'test:phantomas']
   ));
+
+  it('Should have a build:watch task', function() {
+    var task = gulp.tasks['build:watch'];
+    expect(task).to.be.an('object');
+    expect(task.fn).to.be.a('function');
+  });
 
 
   function checkTask(task, expectedConfig, expectedOpts) {

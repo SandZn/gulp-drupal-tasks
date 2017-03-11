@@ -1,26 +1,29 @@
 'use strict';
 var tasks = require('./lib');
+var mergeSources = require('./mergesources');
 
 var subtaskFactory = require('./lib/subtask').factory;
 
 module.exports = function (gulp, config, opts) {
-  var describedTask = function(task) {
+  var describedTask = function(task, deps) {
+    deps = deps || [];
     this.task(
       task.displayName,
       task.description,
+      deps,
       task,
       { options: task.options }
     );
   }.bind(gulp);
 
-  var metaTask = function(prefix, description) {
+  var metaTask = function(prefix, description, fn) {
     var subtaskKeys = Object.keys(this.tasks).filter(function(key) {
       // Find only subtasks that are direct descendents, not second level.
       // Ex: given a prefix of `build`, return build:scss, not build:scss:libs
       return key.indexOf(prefix + ':') === 0
         && key.slice(prefix.length + 1).indexOf(':') === -1;
     });
-    this.task(prefix, description, subtaskKeys);
+    this.task(prefix, description, subtaskKeys, fn);
   }.bind(gulp);
 
   describedTask(tasks.install.composer({}, opts));
@@ -36,12 +39,15 @@ module.exports = function (gulp, config, opts) {
     src: config.jsCheck
   }, opts));
 
+  function addSubtask(subtask) {
+    describedTask(subtask);
+  }
   var scssTasks = subtaskFactory(tasks.build.scss, config.scss, opts);
   var jsTasks = subtaskFactory(tasks.build.js, config.js, opts);
   var copyTasks = subtaskFactory(tasks.build.copy, config.copy, opts);
-  scssTasks.forEach(describedTask);
-  jsTasks.forEach(describedTask);
-  copyTasks.forEach(describedTask);
+  scssTasks.forEach(addSubtask);
+  jsTasks.forEach(addSubtask);
+  copyTasks.forEach(addSubtask);
 
   describedTask(tasks.test.behat({}, opts));
   describedTask(tasks.test.phantomas({}, opts));
@@ -53,4 +59,6 @@ module.exports = function (gulp, config, opts) {
   metaTask('build', 'Run all build tasks.');
   metaTask('check', 'Run all check tasks.');
   metaTask('test', 'Run all test steps.');
+
+  describedTask(tasks.build.watch(gulp, opts), ['build']);
 };

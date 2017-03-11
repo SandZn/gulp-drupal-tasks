@@ -57,6 +57,17 @@ describe('Javascript build task', function() {
     factory(cfg, opts);
   });
 
+  it('Should add a _watch property if src is not empty', function() {
+    var cfg = {src: 'foo'};
+    var task = factory(cfg);
+    expect(task._watch).to.eql('foo');
+  });
+
+  it('Should not add a _watch property if src is empty', function() {
+    var task = factory();
+    expect(task._watch).to.be.null;
+  });
+
   it('Should copy source files', function(done) {
     var stream = factory({
       src: path.join(inpath, 'fixture.js'),
