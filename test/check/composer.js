@@ -33,7 +33,8 @@ describe('Composer Validate Task', function() {
 
     task(function(err) {
       expect(err).to.be.instanceof(PluginError);
-      expect(err.message).to.contain('composer.json is valid for simple usage with composer');
+      var message = 'composer.json is valid for simple usage with composer';
+      expect(err.message).to.contain(message);
       done();
     });
   });

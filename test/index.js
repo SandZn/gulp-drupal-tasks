@@ -95,7 +95,13 @@ describe('Configured tasks', function() {
 
   it('Should have a configured build:js:libs task', checkTask.bind(null,
     gulp.tasks['build:js:libs'],
-    { src: './jssrc', dest: './jsdist', concat: false, maps: false, min: false },
+    {
+      src: './jssrc',
+      dest: './jsdist',
+      concat: false,
+      maps: false,
+      min: false
+    },
     { opt1: true }
   ));
 

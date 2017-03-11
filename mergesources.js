@@ -1,6 +1,6 @@
 /**
- * Loop through an array of asset package objects, merging the source definitions
- * into a single glob.
+ * Loop through an array of asset package objects, merging the source
+ * definitions into a single glob.
  *
  * @param packs
  */

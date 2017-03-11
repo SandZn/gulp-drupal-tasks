@@ -28,7 +28,13 @@ describe('SCSS Task', function() {
 
   it('Should use the default config', function() {
     var task = factory();
-    expect(task._config).to.eql({ src: [], dest: null, maps: false, prefix: {}, sassOptions: {} });
+    expect(task._config).to.eql({
+      src: [],
+      dest: null,
+      maps: false,
+      prefix: {},
+      sassOptions: {}
+    });
     expect(task._opts).to.eql(undefined);
   });
 

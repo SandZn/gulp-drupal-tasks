@@ -5,14 +5,20 @@ var subtaskFactory = require('./lib/subtask').factory;
 
 module.exports = function (gulp, config, opts) {
   var describedTask = function(task) {
-    this.task(task.displayName, task.description, task, { options: task.options });
+    this.task(
+      task.displayName,
+      task.description,
+      task,
+      { options: task.options }
+    );
   }.bind(gulp);
 
   var metaTask = function(prefix, description) {
     var subtaskKeys = Object.keys(this.tasks).filter(function(key) {
       // Find only subtasks that are direct descendents, not second level.
-      // Ex: given a prefix of `build`, only return build:scss, not build:scss:libs
-      return key.indexOf(prefix + ':') === 0 && key.slice(prefix.length + 1).indexOf(':') === -1;
+      // Ex: given a prefix of `build`, return build:scss, not build:scss:libs
+      return key.indexOf(prefix + ':') === 0
+        && key.slice(prefix.length + 1).indexOf(':') === -1;
     });
     this.task(prefix, description, subtaskKeys);
   }.bind(gulp);

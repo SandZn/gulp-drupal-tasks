@@ -10,13 +10,12 @@ var inpath = path.join(__dirname, '../../fixtures');
 var outpath = path.join(__dirname, '../../out-fixtures');
 
 describe('Phantomas Task', function() {
-
   var server = http.createServer(function(req, res) {
     res.setHeader('Content-Type', 'text/html');
     res.writeHead(200);
     switch (req.url) {
       case '/bigpage.html':
-        res.end('<!html><body><img src="/foo.jpg" /><img src="/bar.jpg" /><img src="/baz.jpg" />');
+        res.end('<!html><body><img src="/foo.jpg" /></body>');
         break;
       default:
         res.end('<!html><body></body>');
@@ -48,7 +47,10 @@ describe('Phantomas Task', function() {
 
   it('Should use the default config', function() {
     var task = factory();
-    expect(task._config).to.eql({ src: [], bin: './node_modules/.bin/phantomas' });
+    expect(task._config).to.eql({
+      src: [],
+      bin: './node_modules/.bin/phantomas'
+    });
     expect(task._opts).to.eql({});
   });
 

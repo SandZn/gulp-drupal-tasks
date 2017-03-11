@@ -22,7 +22,7 @@ describe('Subtask factory', function() {
     expect(lister(tasks)).to.eql([]);
   });
 
-  it('Should build an array of subtasks when given an object for config', function() {
+  it('Should build an array of subtasks for a config object', function() {
     var tasks = factory(taskFactory, {
       task1: {},
       task2: {},
@@ -32,7 +32,7 @@ describe('Subtask factory', function() {
     expect(lister(tasks)).to.eql(['task:task1', 'task:task2']);
   });
 
-  it('Should build an array of subtasks when given an array for config', function() {
+  it('Should build an array of subtasks for a config array', function() {
     var tasks = factory(taskFactory, [
       {},
       {}
@@ -42,7 +42,7 @@ describe('Subtask factory', function() {
     expect(lister(tasks)).to.eql(['task:0', 'task:1']);
   });
 
-  it('Should transfer config and opts to subtask when given an object for config', function() {
+  it('Should transfer config to subtask for a config object', function() {
     var tasks = factory(taskFactory, {
       task1: { config1: true },
     }, { opt1: true });
@@ -56,7 +56,7 @@ describe('Subtask factory', function() {
     });
   });
 
-  it('Should transfer config and opts to subtask when given an array for config', function() {
+  it('Should transfer config to subtask for a config array', function() {
     var tasks = factory(taskFactory, [
       { config1: true },
     ], { opt1: true });

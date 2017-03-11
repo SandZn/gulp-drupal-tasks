@@ -29,7 +29,13 @@ describe('Javascript build task', function() {
 
   it('Should use the default config', function() {
     var task = factory();
-    expect(task._config).to.eql({ src: [], dest: null, concat: false, min: false, maps: false });
+    expect(task._config).to.eql({
+      src: [],
+      dest: null,
+      concat: false,
+      min: false,
+      maps: false
+    });
     expect(task._opts).to.eql({});
   });
 
