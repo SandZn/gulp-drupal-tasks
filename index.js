@@ -16,14 +16,14 @@ module.exports = function (gulp, config, opts) {
     );
   }.bind(gulp);
 
-  var metaTask = function(prefix, description, fn) {
+  var metaTask = function(prefix, description) {
     var subtaskKeys = Object.keys(this.tasks).filter(function(key) {
       // Find only subtasks that are direct descendents, not second level.
       // Ex: given a prefix of `build`, return build:scss, not build:scss:libs
       return key.indexOf(prefix + ':') === 0
         && key.slice(prefix.length + 1).indexOf(':') === -1;
     });
-    this.task(prefix, description, subtaskKeys, fn);
+    this.task(prefix, description, subtaskKeys);
   }.bind(gulp);
 
   describedTask(tasks.install.composer({}, opts));
