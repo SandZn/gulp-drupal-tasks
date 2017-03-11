@@ -30,9 +30,9 @@ describe('PHPCS Task', function() {
     factory(cfg, opts);
   });
 
-  it('Should check file globs', function(done) {
+  it('Should fail for an invalid file', function(done) {
     var stream = factory({
-      src: path.join(inpath, 'fixture.php')
+      src: path.join(inpath, 'invalid.php')
     })();
     stream.on('error', function(err) {
       expect(err).to.be.instanceOf(PluginError);
@@ -44,4 +44,15 @@ describe('PHPCS Task', function() {
     });
     stream.resume();
   });
+
+  it('Should pass for a valid file', function(done) {
+    var stream = factory({
+      src: path.join(inpath, 'valid.php')
+    })();
+    stream.on('error', done);
+    stream.on('end', function() {
+      done();
+    });
+    stream.resume();
+  })
 });

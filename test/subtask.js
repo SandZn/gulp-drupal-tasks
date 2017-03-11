@@ -73,4 +73,12 @@ describe('Subtask factory', function() {
       opt1: true,
     });
   });
+
+  it('Should not consider inherited properties of the config object', function() {
+    function myconfig() { }
+    myconfig.prototype.someProp = function() { };
+    var tasks = factory(taskFactory, new myconfig(), { opt1: true });
+    expect(tasks).to.be.an('array');
+    expect(tasks.length).to.equal(0);
+  })
 });
