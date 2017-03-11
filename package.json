@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint .",
     "jest": "jest",
-    "test": "eslint . && jest"
+    "test": "eslint . && mocha --timeout=9000 './**/__tests__/*.js'"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +17,7 @@
     "gulp-imagemin": "^3.1.1",
     "jest": "^18.1.0",
     "jest-junit": "^1.1.0",
+    "mocha": "^3.2.0",
     "rimraf": "^2.5.4"
   },
   "dependencies": {
