@@ -1,4 +1,4 @@
-var factory = require('../scss');
+var factory = require('../../lib/build/scss');
 var path = require('path');
 var rimraf = require('rimraf');
 var chai = require('chai');
@@ -9,8 +9,8 @@ chai.use(chaiFiles);
 var expect = chai.expect;
 var file = chaiFiles.file;
 
-var outpath = path.join(__dirname, '../../__out-fixtures');
-var inpath = path.join(__dirname, '../../__fixtures');
+var outpath = path.join(__dirname, '../../out-fixtures');
+var inpath = path.join(__dirname, '../../fixtures');
 
 describe('SCSS Task', function() {
   beforeEach(rimraf.bind(null, outpath, {}));

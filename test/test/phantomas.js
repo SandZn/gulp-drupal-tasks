@@ -1,13 +1,13 @@
 
 var path = require('path');
-var factory = require('../phantomas');
+var factory = require('../../lib/test/phantomas');
 var http = require('http');
 var rimraf = require('rimraf');
 var expect = require('chai').expect;
 var PluginError = require('gulp-util').PluginError;
 
-var inpath = path.join(__dirname, '../../__fixtures');
-var outpath = path.join(__dirname, '../../__out-fixtures');
+var inpath = path.join(__dirname, '../../fixtures');
+var outpath = path.join(__dirname, '../../out-fixtures');
 
 describe('Phantomas Task', function() {
 

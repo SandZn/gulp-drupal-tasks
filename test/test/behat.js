@@ -1,11 +1,11 @@
 
 var path = require('path');
-var factory = require('../behat');
+var factory = require('../../lib/test/behat');
 var which = require('which');
 var expect = require('chai').expect;
 var PluginError = require('gulp-util').PluginError;
 
-var inpath = path.join(__dirname, '../../__fixtures');
+var inpath = path.join(__dirname, '../../fixtures');
 
 describe('Behat Task', function() {
 

@@ -1,10 +1,10 @@
 
 var path = require('path');
-var factory = require('../phplint');
+var factory = require('../../lib/check/phplint');
 var expect = require('chai').expect;
 var PluginError = require('gulp-util').PluginError;
 
-var inpath = path.join(__dirname, '../../__fixtures');
+var inpath = path.join(__dirname, '../../fixtures');
 
 describe('PHPLint Task', function() {
 

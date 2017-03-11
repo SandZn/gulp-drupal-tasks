@@ -1,6 +1,6 @@
 
-var factory = require('../subtask').factory;
-var lister = require('../subtask').lister;
+var factory = require('../lib/subtask').factory;
+var lister = require('../lib/subtask').lister;
 
 var expect = require('chai').expect;
 

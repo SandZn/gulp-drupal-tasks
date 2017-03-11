@@ -1,12 +1,12 @@
 
 var path = require('path');
-var factory = require('../eslint');
+var factory = require('../../lib/check/phpcs');
 var expect = require('chai').expect;
 var PluginError = require('gulp-util').PluginError;
 
-var inpath = path.join(__dirname, '../../__fixtures');
+var inpath = path.join(__dirname, '../../fixtures');
 
-describe('ESLint Task', function() {
+describe('PHPCS Task', function() {
 
   it('Should do nothing if it is called with an empty config', function() {
     var stream = factory()();
@@ -30,45 +30,18 @@ describe('ESLint Task', function() {
     factory(cfg, opts);
   });
 
-  it('Should run ESLint checks on matching files', function(done) {
-    var outStream = function() {};
+  it('Should check file globs', function(done) {
     var stream = factory({
-      src: path.join(inpath, 'fixture.js'),
-      ignore: false,
-      logOutput: outStream
+      src: path.join(inpath, 'fixture.php')
     })();
-
     stream.on('error', function(err) {
       expect(err).to.be.instanceOf(PluginError);
-      expect(err.message).to.equal('Failed with 1 error');
+      expect(err.message).to.contain('PHP Code Sniffer failed on');
       done();
     });
     stream.on('end', function() {
       done(new Error('Expected an error to be thrown'));
     });
-    stream.resume();
-  });
-
-  it('Should allow an array of globs', function(done) {
-    var stream = factory({
-      src: [
-        path.join(inpath, '*.nonexistent'),
-        path.join(inpath, '*.stillnonexistent')
-      ]
-    })();
-    stream.on('error', done);
-    stream.on('end', done);
-    stream.resume();
-  });
-
-  it('Passes configuration options through to eslint', function(done) {
-    var stream = factory({
-      src: path.join(inpath, 'fixture.js'),
-      rules: { 'no-extend-native': 0 },
-    })();
-
-    stream.on('error', done);
-    stream.on('end', done);
     stream.resume();
   });
 });

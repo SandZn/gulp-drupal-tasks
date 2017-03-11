@@ -3,10 +3,13 @@ machine:
     version: 6.9.1
   php:
     version: 7.0.4
-  environment:
-    JEST_JUNIT_OUTPUT: "$CIRCLE_TEST_REPORTS/jest.xml"
 
 dependencies:
   post:
     - curl -L -o /home/ubuntu/bin/phpcs https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar && chmod +x /home/ubuntu/bin/phpcs
     - curl -L -o /home/ubuntu/bin/behat https://github.com/Behat/Behat/releases/download/v3.3.0/behat.phar && chmod +x /home/ubuntu/bin/behat
+
+test:
+  override:
+    - node_modules/.bin/eslint -f junit . > $CIRCLE_TEST_REPORTS/eslint.xml
+    - node_modules/.bin/mocha --reporter mocha-junit-reporter --reporter-options mochaFile="$CIRCLE_TEST_REPORTS/mocha.xml"

@@ -1,5 +1,5 @@
 
-var factory = require('../composer');
+var factory = require('../../lib/install/bower');
 var path = require('path');
 var rimraf = require('rimraf');
 var chai = require('chai');
@@ -10,10 +10,10 @@ chai.use(chaiFiles);
 var expect = chai.expect;
 var dir = chaiFiles.dir;
 
-var inpath = path.join(__dirname, '../../__fixtures');
-var outpath = path.join(__dirname, '../../__fixtures/vendor');
+var outpath = path.join(__dirname, '../../fixtures/bower_components');
+var inpath = path.join(__dirname, '../../fixtures');
 
-describe('Composer task', function() {
+describe('Bower task', function() {
   afterEach(rimraf.bind(null, outpath, {}));
   beforeEach(rimraf.bind(null, outpath, {}));
 
@@ -35,12 +35,8 @@ describe('Composer task', function() {
     factory(cfg, opts);
   });
 
-  it('Should install composer dependencies', function(done) {
-    var task = factory({
-      src: inpath,
-      quiet: true
-    });
-
+  it('Should install bower dependencies', function(done) {
+    var task = factory({ src: inpath });
     task(function() {
       expect(dir(outpath)).to.exist;
       done();
