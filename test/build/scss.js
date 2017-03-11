@@ -92,17 +92,31 @@ describe('SCSS Task', function() {
   it('Should prefix properties', function(done) {
     var stream = factory({
       src: path.join(inpath, 'fixture.scss'),
-      dest: outpath,
-      prefix: { browsers: ['last 4 versions'] }
+      dest: outpath
     })();
     stream.on('error', done);
     stream.on('end', function() {
       var cssFile = file(path.join(outpath, 'fixture.css'));
-      expect(cssFile).to.contain('-ms-flex-preferred-size');
+      expect(cssFile).to.contain('-ms-user-select');
       done();
     });
     stream.resume();
   });
+
+  it('Should not prefix properties if prefix is false', function(done) {
+    var stream = factory({
+      src: path.join(inpath, 'fixture.scss'),
+      dest: outpath,
+      prefix: false
+    })();
+    stream.on('error', done);
+    stream.on('end', function() {
+      var cssFile = file(path.join(outpath, 'fixture.css'));
+      expect(cssFile).not.to.contain('-ms-user-select');
+      done();
+    });
+    stream.resume();
+  })
 
   it('Should use CSS optimizer', function(done) {
     var stream = factory({
