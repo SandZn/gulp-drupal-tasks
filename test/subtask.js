@@ -24,7 +24,7 @@ describe('Subtask factory', function() {
 
   it('Should fail to create subtasks if an invalid config is passed', function() {
     expect(factory.bind(null, taskFactory, '', {})).to.throw(Error);
-  })
+  });
 
   it('Should build an array of subtasks for a config object', function() {
     var tasks = factory(taskFactory, {

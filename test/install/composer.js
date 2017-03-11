@@ -53,5 +53,5 @@ describe('Composer task', function() {
       expect(err).to.be.an.instanceof(PluginError);
       done();
     });
-  })
+  });
 });

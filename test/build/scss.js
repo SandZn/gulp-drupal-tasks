@@ -57,7 +57,7 @@ describe('SCSS Task', function() {
       src: [],
       sassOptions: ''
     })).to.throw(PluginError);
-  })
+  });
 
   it('Should build SCSS files', function(done) {
     var stream = factory({

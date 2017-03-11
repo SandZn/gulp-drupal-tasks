@@ -6,7 +6,6 @@ machine:
 
 dependencies:
   post:
-    - pip install --user codecov
     - curl -L -o /home/ubuntu/bin/phpcs https://squizlabs.github.io/PHP_CodeSniffer/phpcs.phar && chmod +x /home/ubuntu/bin/phpcs
     - curl -L -o /home/ubuntu/bin/behat https://github.com/Behat/Behat/releases/download/v3.3.0/behat.phar && chmod +x /home/ubuntu/bin/behat
 
@@ -14,4 +13,5 @@ test:
   override:
     - node_modules/.bin/eslint -f junit . > $CIRCLE_TEST_REPORTS/eslint.xml
     - node_modules/.bin/istanbul cover node_modules/.bin/_mocha -- --reporter mocha-junit-reporter --reporter-options mochaFile="$CIRCLE_TEST_REPORTS/mocha.xml"
-    - codecov --file coverage/lcov.info --disable search
+  post:
+    - bash <(curl -s https://codecov.io/bash)
