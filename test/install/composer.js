@@ -39,8 +39,10 @@ describe('Composer task', function() {
   });
 
   it('Should install composer dependencies', function(done) {
+    // Use the invalid composer that does not have a name property,
+    // because it skips a lot of network calls that way.
     var task = factory({
-      src: inpath + '/composer-valid.json',
+      src: inpath + '/composer-invalid.json',
       quiet: true
     });
 
