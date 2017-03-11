@@ -41,6 +41,8 @@
     "through2": "^2.0.3"
   },
   "jest": {
+    "testEnvironment": "node",
+    "verbose": true,
     "testResultsProcessor": "./node_modules/jest-junit"
   }
 }
