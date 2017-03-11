@@ -44,6 +44,21 @@ describe('SCSS Task', function() {
     factory(cfg, opts);
   });
 
+  it('Should fail when called with invalid config', function() {
+    expect(factory.bind(null, {
+      src: [],
+      maps: {}
+    })).to.throw(PluginError);
+    expect(factory.bind(null, {
+      src: [],
+      prefix: '',
+    })).to.throw(PluginError);
+    expect(factory.bind(null, {
+      src: [],
+      sassOptions: ''
+    })).to.throw(PluginError);
+  })
+
   it('Should build SCSS files', function(done) {
     var stream = factory({
       src: path.join(inpath, 'fixture.scss'),

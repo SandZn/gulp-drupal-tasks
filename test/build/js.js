@@ -25,6 +25,18 @@ describe('Javascript build task', function() {
   it('Should fail on an invalid config or opts being passed', function() {
     expect(factory.bind(factory, '')).to.throw(PluginError);
     expect(factory.bind(factory, {}, '')).to.throw(PluginError);
+    expect(factory.bind(null, {
+      src: [],
+      min: ''
+    })).to.throw(PluginError);
+    expect(factory.bind(null, {
+      src: [],
+      maps: {}
+    })).to.throw(PluginError);
+    expect(factory.bind(null, {
+      src: [],
+      concat: {}
+    })).to.throw(PluginError);
   });
 
   it('Should use the default config', function() {

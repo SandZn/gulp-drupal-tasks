@@ -46,4 +46,12 @@ describe('Composer task', function() {
       done();
     });
   });
+
+  it('Should fail if there is an error', function() {
+    var task = factory({ src: path.join(inpath, 'nonexistent') });
+    task(function(err) {
+      expect(err).to.be.an.instanceof(PluginError);
+      done();
+    });
+  })
 });

@@ -22,6 +22,10 @@ describe('Subtask factory', function() {
     expect(lister(tasks)).to.eql([]);
   });
 
+  it('Should fail to create subtasks if an invalid config is passed', function() {
+    expect(factory.bind(null, taskFactory, '', {})).to.throw(Error);
+  })
+
   it('Should build an array of subtasks for a config object', function() {
     var tasks = factory(taskFactory, {
       task1: {},
@@ -42,7 +46,7 @@ describe('Subtask factory', function() {
     expect(lister(tasks)).to.eql(['task:0', 'task:1']);
   });
 
-  it('Should transfer config to subtask for a config object', function() {
+  it('should transfer config to subtasks for a config object', function() {
     var tasks = factory(taskFactory, {
       task1: { config1: true },
     }, { opt1: true });
@@ -56,7 +60,7 @@ describe('Subtask factory', function() {
     });
   });
 
-  it('Should transfer config to subtask for a config array', function() {
+  it('Should transfer config to subtasks for a config array', function() {
     var tasks = factory(taskFactory, [
       { config1: true },
     ], { opt1: true });
