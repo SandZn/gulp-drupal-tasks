@@ -34,7 +34,7 @@ describe('Composer Validate Task', function() {
       src: inpath + '/composer-valid.json'
     });
     task(done);
-  })
+  });
 
   it('Should fail composer validate for an invalid composer file', function(done) {
     var task = factory({

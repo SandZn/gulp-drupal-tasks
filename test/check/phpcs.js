@@ -54,5 +54,5 @@ describe('PHPCS Task', function() {
       done();
     });
     stream.resume();
-  })
+  });
 });

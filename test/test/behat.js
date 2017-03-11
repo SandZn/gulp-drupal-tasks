@@ -13,8 +13,8 @@ describe('Behat Task', function() {
     which('behat', function(err, resolvedPath) {
       behatBin = resolvedPath;
       done(err);
-    })
-  })
+    });
+  });
 
   it('Should use the default config', function() {
     var task = factory();

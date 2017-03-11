@@ -32,7 +32,7 @@ describe('SCSS Task', function() {
       src: [],
       dest: null,
       maps: false,
-      prefix: {browsers: 'last 2 versions'},
+      prefix: { browsers: 'last 2 versions' },
       sassOptions: {}
     });
     expect(task._opts).to.eql(undefined);
@@ -116,7 +116,7 @@ describe('SCSS Task', function() {
       done();
     });
     stream.resume();
-  })
+  });
 
   it('Should use CSS optimizer', function(done) {
     var stream = factory({

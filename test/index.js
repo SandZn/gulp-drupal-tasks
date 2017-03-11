@@ -78,7 +78,7 @@ describe('Configured tasks', function() {
 
   it('Should have a configured build:scss:libs task', checkTask.bind(null,
     gulp.tasks['build:scss:libs'],
-    { src: './foo', dest: './bar', maps: false, prefix: {browsers: 'last 2 versions'}, sassOptions: {} },
+    { src: './foo', dest: './bar', maps: false, prefix: { browsers: 'last 2 versions' }, sassOptions: {} },
     { opt1: true }
   ));
   it('Should have a meta build:scss task', checkMetaTask.bind(null,
