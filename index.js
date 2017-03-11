@@ -1,6 +1,5 @@
 'use strict';
 var tasks = require('./lib');
-var mergeSources = require('./mergesources');
 
 var subtaskFactory = require('./lib/subtask').factory;
 

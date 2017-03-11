@@ -45,7 +45,7 @@ describe('SCSS Task', function() {
   });
 
   it('Should add a _watch property if src is not empty', function() {
-    var cfg = {src: 'foo'};
+    var cfg = { src: 'foo' };
     var task = factory(cfg);
     expect(task._watch).to.eql('foo');
   });
