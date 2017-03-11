@@ -19,14 +19,17 @@ describe('Composer task', function() {
 
   it('Should should fall back to a default config', function() {
     var task = factory();
-    expect(task._config).to.eql({ src: '.' });
+    expect(task._config).to.eql({ src: './composer.json' });
     var task = factory({});
-    expect(task._config).to.eql({ src: '.' });
+    expect(task._config).to.eql({ src: './composer.json' });
   });
 
   it('Should fail on an invalid config or opts being passed', function() {
-    expect(factory.bind(factory, '')).to.throw(PluginError);
-    expect(factory.bind(factory, {}, '')).to.throw(PluginError);
+    expect(factory.bind(factory, '')).to.throw(PluginError, 'config must be an object');
+    expect(factory.bind(factory, {}, '')).to.throw(PluginError, 'opts must be an object');
+    expect(factory.bind(null, {
+      src: {}
+    })).to.throw(PluginError, 'src must be a string');
   });
 
   it('Should not modify the config or opts object', function() {
@@ -36,8 +39,10 @@ describe('Composer task', function() {
   });
 
   it('Should install composer dependencies', function(done) {
+    // Use the invalid composer that does not have a name property,
+    // because it skips a lot of network calls that way.
     var task = factory({
-      src: inpath,
+      src: inpath + '/composer-invalid.json',
       quiet: true
     });
 
@@ -47,7 +52,7 @@ describe('Composer task', function() {
     });
   });
 
-  it('Should fail if there is an error', function() {
+  it('Should fail if there is an error', function(done) {
     var task = factory({ src: path.join(inpath, 'nonexistent') });
     task(function(err) {
       expect(err).to.be.an.instanceof(PluginError);

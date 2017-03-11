@@ -4,6 +4,8 @@ a {
 }
 body {
   color:$black;
-  flex-basis:inherit;
+}
+.prefixed {
+  user-select: none;
 }
 

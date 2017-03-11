@@ -14,8 +14,8 @@ describe('ESLint Task', function() {
   });
 
   it('Should fail on an invalid config or opts being passed', function() {
-    expect(factory.bind(factory, '')).to.throw(PluginError);
-    expect(factory.bind(factory, {}, '')).to.throw(PluginError);
+    expect(factory.bind(factory, '')).to.throw(PluginError, 'config must be an object');
+    expect(factory.bind(factory, {}, '')).to.throw(PluginError, 'opts must be an object');
   });
 
   it('Should use the default config', function() {

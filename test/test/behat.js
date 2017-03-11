@@ -8,6 +8,13 @@ var PluginError = require('gulp-util').PluginError;
 var inpath = path.join(__dirname, '../../fixtures');
 
 describe('Behat Task', function() {
+  var behatBin;
+  before(function(done) {
+    which('behat', function(err, resolvedPath) {
+      behatBin = resolvedPath;
+      done(err);
+    });
+  });
 
   it('Should use the default config', function() {
     var task = factory();
@@ -16,8 +23,8 @@ describe('Behat Task', function() {
   });
 
   it('Should fail on an invalid config or opts being passed', function() {
-    expect(factory.bind(factory, '')).to.throw(PluginError);
-    expect(factory.bind(factory, {}, '')).to.throw(PluginError);
+    expect(factory.bind(factory, '')).to.throw(PluginError, 'config must be an object');
+    expect(factory.bind(factory, {}, '')).to.throw(PluginError, 'opts must be an object');
   });
 
   it('Should not modify the config or opts object', function() {
@@ -29,7 +36,7 @@ describe('Behat Task', function() {
   it('Should run behat', function(done) {
     var stream = factory({
       configFile: path.join(inpath, 'behat.yml'),
-      bin: which.sync('behat'),
+      bin: behatBin,
       suite: 'passing',
       silent: true,
     })();
@@ -41,7 +48,7 @@ describe('Behat Task', function() {
   it('Should throw an error on behat failures', function(done) {
     var stream = factory({
       configFile: path.join(inpath, 'behat.yml'),
-      bin: which.sync('behat'),
+      bin: behatBin,
       suite: 'failing',
       silent: true,
     })();
