@@ -117,7 +117,7 @@ describe('Backstop task', function() {
       // Use an alternate URL so we know to switch the reference directory to
       // the outpath.
       baseUrl: 'http://' + ip.address() + ':9763/rebase'
-    }, {rebase: true});
+    }, { rebase: true });
     task(function(err) {
       expect(file(outpath + '/reference/visual_Homepage_0_document_0_phone.png')).to.exist;
       done(err);
