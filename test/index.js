@@ -4,6 +4,7 @@ var factory = require('../');
 var expect = require('chai').expect;
 
 var config = {
+  bowerJsonDirectory: 'my/bower/dir',
   phpCheck: ['foo'],
   jsCheck: ['bar'],
   scss: {
@@ -42,7 +43,7 @@ describe('Configured tasks', function() {
 
   it('Should have a configured install:bower task', checkTask.bind(checkTask,
     gulp.tasks['install:bower'],
-    { src: '.' },
+    { src: 'my/bower/dir' },
     { opt1: true }
   ));
 

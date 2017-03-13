@@ -26,7 +26,9 @@ module.exports = function (gulp, config, opts) {
   }.bind(gulp);
 
   describedTask(tasks.install.composer({}, opts));
-  describedTask(tasks.install.bower({}, opts));
+  describedTask(tasks.install.bower({
+    src: config.bowerJsonDirectory
+  }, opts));
   describedTask(tasks.check.composer({}, opts));
   describedTask(tasks.check.phplint({
     src: config.phpCheck
