@@ -50,6 +50,7 @@ module.exports = function (gulp, config, opts) {
 
   describedTask(tasks.test.behat({}, opts));
   describedTask(tasks.test.phantomas({}, opts));
+  describedTask(tasks.test.backstop(config.backstopjs, opts));
 
   metaTask('install', 'Run all install tasks.');
   metaTask('build:scss', 'Build CSS from SCSS');

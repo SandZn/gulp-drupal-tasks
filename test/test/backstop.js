@@ -52,13 +52,15 @@ describe('Backstop task', function() {
     expect(task._config).to.eql({
       src: null,
       junitGlob: null,
-      artifactGlob: null
+      artifactGlob: null,
+      baseUrl: null
     });
     var task = factory({});
     expect(task._config).to.eql({
       src: null,
       junitGlob: null,
-      artifactGlob: null
+      artifactGlob: null,
+      baseUrl: null
     });
   });
 

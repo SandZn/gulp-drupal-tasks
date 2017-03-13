@@ -135,9 +135,15 @@ describe('Configured tasks', function() {
     { opt1: true }
   ));
 
+  it('Should have a configured test:backstop task', checkTask.bind(null,
+    gulp.tasks['test:backstopjs'],
+    { src: null, artifactGlob: null, junitGlob: null, baseUrl: null },
+    { opt1: true, junitDir: null }
+  ));
+
   it('Should have a meta test task', checkMetaTask.bind(null,
     gulp.tasks['test'],
-    ['test:behat', 'test:phantomas']
+    ['test:behat', 'test:phantomas', 'test:backstopjs']
   ));
 
   it('Should have a build:watch task', function() {
