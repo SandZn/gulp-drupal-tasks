@@ -11,7 +11,7 @@ describe('Config adapter', function() {
   });
 
   it('Should throw an exception when given an invalid version', function() {
-    var cb = configBuilder.bind(null, {version: 19});
+    var cb = configBuilder.bind(null, { version: 19 });
     expect(cb).to.throw(Error, 'Invalid config version: 19');
   });
 

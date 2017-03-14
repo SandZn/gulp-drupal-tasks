@@ -87,7 +87,7 @@ describe('Gulp Helper', function() {
 
     it('Should throw an error when given an invalid factory', function() {
       expect(helper.addSubtasks).to.throw(Error, 'Task factory must be a function');
-    })
+    });
 
     it('Should throw an error when given an invalid configuration', function() {
       var cb = helper.addSubtasks.bind(helper, function() {}, false);
