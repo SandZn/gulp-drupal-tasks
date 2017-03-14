@@ -24,7 +24,7 @@ Usage:
     var config = require('./gulpconfig');
     addTasks(gulp, config, opts);
     ```
-3.  Create the `gulpconfig.js` file (documentation TK).
+3.  Create a [`gulpconfig.js` file](docs/config-reference.js).
 
 Guidelines for development:
 --------------------------
