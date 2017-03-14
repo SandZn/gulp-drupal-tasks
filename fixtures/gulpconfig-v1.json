@@ -1,19 +1,31 @@
 {
-  "baseUrl": "http://example.com:8888",
-  "bowerJsonDirectory": "my/bower/dir",
-  "phpCheck": "my/php/dir",
-  "phpcsStandard": "my/phpcs/standard",
-  "jsCheck": "my/js/dir",
+  "bower": {
+    "src": "./bower.json"
+  },
+  "composer": {
+    "src": "./composer.json"
+  },
+  "phpcs": {
+    "src": "**.php"
+  },
+  "phplint": {
+    "src": "**.php"
+  },
+  "eslint": {
+    "src": "**.js"
+  },
   "behat": {
     "configFile": "behat.yml"
   },
   "backstopjs": {
     "src": "backstop/backstop.js",
+    "baseUrl": "http://example.com",
     "artifactGlob": "backstop/reports/**",
     "junitGlob": "backstop/**.xml"
   },
   "phantomas": {
-    "src": "phantomas/phantomas.yml"
+    "src": "phantomas/phantomas.yml",
+    "baseUrl": "http://example.com"
   },
   "scss": {
     "theme": {

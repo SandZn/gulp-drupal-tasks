@@ -21,26 +21,25 @@ describe('Config adapter', function() {
 
     it('Should configure the install:bower task', function() {
       expect(parsed.install.bower).to.eql({
-        src: 'my/bower/dir'
+        src: './bower.json'
       });
     });
 
     it('Should configure the check:phpcs task', function() {
       expect(parsed.check.phpcs).to.eql({
-        src: 'my/php/dir',
-        standard: 'my/phpcs/standard'
+        src: '**.php',
       });
     });
 
     it('Should configure the check:phplint task', function() {
       expect(parsed.check.phplint).to.eql({
-        src: 'my/php/dir'
+        src: '**.php'
       });
     });
 
     it('Should configure the check:eslint task', function() {
       expect(parsed.check.eslint).to.eql({
-        src: 'my/js/dir'
+        src: '**.js'
       });
     });
 
@@ -52,7 +51,7 @@ describe('Config adapter', function() {
 
     it('Should configure the test:backstop task', function() {
       expect(parsed.test.backstopjs).to.eql({
-        baseUrl: 'http://example.com:8888',
+        baseUrl: 'http://example.com',
         src: 'backstop/backstop.js',
         junitGlob: 'backstop/**.xml',
         artifactGlob: 'backstop/reports/**'
@@ -61,7 +60,7 @@ describe('Config adapter', function() {
 
     it('Should configure the test:phantomas task', function() {
       expect(parsed.test.phantomas).to.eql({
-        baseUrl: 'http://example.com:8888',
+        baseUrl: 'http://example.com',
         src: 'phantomas/phantomas.yml',
       });
     });

@@ -20,7 +20,7 @@ describe('PHPCS Task', function() {
 
   it('Should use the default config', function() {
     var task = factory();
-    expect(task._config).to.eql({ src: [], bin: 'vendor/bin/phpcs' });
+    expect(task._config).to.eql({ src: [], bin: null });
     expect(task._opts).to.eql(undefined);
   });
 
@@ -47,7 +47,7 @@ describe('PHPCS Task', function() {
 
   it('Should pass for a valid file', function(done) {
     var stream = factory({
-      src: path.join(inpath, 'valid.php')
+      src: path.join(inpath, 'valid.php'),
     })();
     stream.on('error', done);
     stream.on('end', function() {

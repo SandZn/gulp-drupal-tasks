@@ -4,8 +4,9 @@ var gulpfileBuilder = require('../lib');
 var expect = require('chai').expect;
 
 describe('Configured tasks', function() {
-  gulpfileBuilder(gulp, {}, {});
-
+  var input = require('../fixtures/gulpconfig-v1.json');
+  var config = require('../lib/config')(input);
+  gulpfileBuilder(gulp, config, {});
 
   var tasks = [
     'build',
