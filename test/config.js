@@ -10,7 +10,7 @@ describe('V1 Config', function() {
   it('Should configure the install:bower task', function() {
     expect(parsed.install.bower).to.eql({
       src: 'my/bower/dir'
-    })
+    });
   });
 
   it('Should configure the check:phpcs task', function() {
@@ -51,14 +51,14 @@ describe('V1 Config', function() {
     expect(parsed.test.phantomas).to.eql({
       baseUrl: 'http://example.com:8888',
       src: 'phantomas/phantomas.yml',
-    })
+    });
   });
 
   it('Should configure the build:scss task', function() {
     expect(parsed.build.scss).to.eql({
       theme: {
-        src: "*.scss",
-        dest: "dist/"
+        src: '*.scss',
+        dest: 'dist/'
       }
     });
   });
@@ -66,8 +66,8 @@ describe('V1 Config', function() {
   it('Should configure the build:js task', function() {
     expect(parsed.build.js).to.eql({
       theme: {
-        src: "*.js",
-        dest: "dist/"
+        src: '*.js',
+        dest: 'dist/'
       }
     });
   });
@@ -75,8 +75,8 @@ describe('V1 Config', function() {
   it('Should configure the build:copy task', function() {
     expect(parsed.build.copy).to.eql({
       theme: {
-        src: "*.jpg",
-        dest: "dist/"
+        src: '*.jpg',
+        dest: 'dist/'
       }
     });
   });

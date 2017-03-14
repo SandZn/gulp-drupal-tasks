@@ -6,13 +6,13 @@ var expect = require('chai').expect;
 
 var config = {
   install: {
-    bower: {src: 'my/bower/dir'},
+    bower: { src: 'my/bower/dir' },
     composer: {}
   },
   check: {
-    phpcs: {src: 'my/phpcs/dir'},
-    phplint: {src: 'my/phplint/dir'},
-    eslint: {src: 'my/eslint/dir'},
+    phpcs: { src: 'my/phpcs/dir' },
+    phplint: { src: 'my/phplint/dir' },
+    eslint: { src: 'my/eslint/dir' },
     composer: {},
   },
   build: {
@@ -40,9 +40,9 @@ var config = {
     }
   },
   test: {
-    behat: {bin: 'my/behat/bin'},
-    phantomas: {src: 'my/phantomas/dir'},
-    backstopjs: {src: 'my/backstop/dir'},
+    behat: { bin: 'my/behat/bin' },
+    phantomas: { src: 'my/phantomas/dir' },
+    backstopjs: { src: 'my/backstop/dir' },
   },
 };
 var opts = { opt1: true };
@@ -75,7 +75,7 @@ describe('Configured tasks', function() {
 
   it('Should have a configured check:phpcs task', checkTask.bind(null,
     gulp.tasks['check:phpcs'],
-    { src: 'my/phpcs/dir'},
+    { src: 'my/phpcs/dir' },
     { opt1: true }
   ));
 

@@ -7,7 +7,7 @@ var subtaskFactory = require('./lib/subtask').factory;
 module.exports = {
   buildConfig: configBuilder,
   addTasks: addTasks
-}
+};
 
 function addTasks(gulp, config, opts) {
   var describedTask = function(task, deps) {
