@@ -76,6 +76,9 @@ describe('Backstop task', function() {
     expect(factory.bind(null, {
       artifactGlob: {}
     })).to.throw(PluginError, 'artifactGlob must be a string glob, or null');
+    expect(factory.bind(null, {
+      baseUrl: {}
+    })).to.throw(PluginError, 'baseUrl must be a string');
   });
 
   it('Should not modify the config or opts object', function() {
