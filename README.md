@@ -33,3 +33,7 @@ Guidelines for development:
 3. All tasks should fail predictably (no plugin failures that don't also fail the build).
 4. Task configuration should be explicitly checked as quickly as possible.
 5. Don't put slow calls into the critical path.  Gulp boot should be as fast as possible.  Delay slow requires or file existence checks until the task is actually executed.
+
+Publishing on NPM
+-----------------
+When you are ready to release a new version, run `npm publish X.X.X`.  This will update the version in package.json, and create a new tagged commit.  Just push it to github using `git push origin master --follow-tags`, and CircleCI will deploy it to NPM.
