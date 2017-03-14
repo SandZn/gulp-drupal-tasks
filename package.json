@@ -1,7 +1,8 @@
 {
   "name": "lastcall-gulp-drupal-tasks",
   "version": "1.0.0-beta3",
-  "description": "",
+  "description": "Gulp Drupal Tasks",
+  "repository": "LastCallMedia/gulp-drupal-tasks",
   "main": "index.js",
   "files": [
     "index.js",
