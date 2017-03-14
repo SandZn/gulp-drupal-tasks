@@ -1,11 +1,11 @@
 
-var configAdapter = require('../lib/config');
+var configBuilder = require('../lib/config');
 var expect = require('chai').expect;
 
 
 describe('V1 Config', function() {
   var input = require('../fixtures/gulpconfig-v1.json');
-  var parsed = configAdapter.adapt(input);
+  var parsed = configBuilder(input);
 
   it('Should configure the install:bower task', function() {
     expect(parsed.install.bower).to.eql({

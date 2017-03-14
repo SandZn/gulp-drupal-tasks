@@ -5,7 +5,7 @@ var configBuilder = require('./lib/config');
 var subtaskFactory = require('./lib/subtask').factory;
 
 module.exports = {
-  buildConfig: configBuilder.adapt,
+  buildConfig: configBuilder,
   addTasks: addTasks
 }
 
