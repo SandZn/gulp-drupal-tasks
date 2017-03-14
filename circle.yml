@@ -21,10 +21,12 @@ test:
   override:
     - node_modules/.bin/eslint -f junit . > $CIRCLE_TEST_REPORTS/eslint.xml
     - node_modules/.bin/istanbul cover --dir $CIRCLE_ARTIFACTS/coverage node_modules/.bin/_mocha -- --reporter mocha-junit-reporter --reporter-options mochaFile="$CIRCLE_TEST_REPORTS/mocha.xml"
-  post:
-    - bash <(curl -s https://codecov.io/bash)
 
 deployment:
+  coverage:
+    branch: /.*/
+    commands:
+      - bash <(curl -s https://codecov.io/bash)
   npm:
     tag: /v[0-9]+(\.[0-9]+)*(-(alpha|beta|rc)\d+)?/
     commands:
