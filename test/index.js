@@ -1,39 +1,54 @@
 
 var gulp = require('gulp-help')(require('gulp'));
 var factory = require('../');
+var addTasks = factory.addTasks;
 var expect = require('chai').expect;
 
 var config = {
-  bowerJsonDirectory: 'my/bower/dir',
-  phpCheck: ['foo'],
-  jsCheck: ['bar'],
-  scss: {
-    libs: {
-      src: './foo',
-      dest: './bar',
+  install: {
+    bower: { src: 'my/bower/dir' },
+    composer: {}
+  },
+  check: {
+    phpcs: { src: 'my/phpcs/dir' },
+    phplint: { src: 'my/phplint/dir' },
+    eslint: { src: 'my/eslint/dir' },
+    composer: {},
+  },
+  build: {
+    scss: {
+      libs: {
+        src: './foo',
+        dest: './bar',
+      },
+      theme: {
+        src: './baz',
+        dest: './bar',
+      }
     },
-    theme: {
-      src: './baz',
-      dest: './bar',
+    js: {
+      libs: {
+        src: './jssrc',
+        dest: './jsdist',
+      }
+    },
+    copy: {
+      images: {
+        src: './imgsrc',
+        dest: './imgdist',
+      }
     }
   },
-  js: {
-    libs: {
-      src: './jssrc',
-      dest: './jsdist',
-    }
+  test: {
+    behat: { bin: 'my/behat/bin' },
+    phantomas: { src: 'my/phantomas/dir' },
+    backstopjs: { src: 'my/backstop/dir' },
   },
-  copy: {
-    images: {
-      src: './imgsrc',
-      dest: './imgdist',
-    }
-  }
 };
 var opts = { opt1: true };
 
 describe('Configured tasks', function() {
-  factory(gulp, config, opts);
+  addTasks(gulp, config, opts);
 
   it('Should have a configured install:composer task', checkTask.bind(checkTask,
     gulp.tasks['install:composer'],
@@ -60,19 +75,19 @@ describe('Configured tasks', function() {
 
   it('Should have a configured check:phpcs task', checkTask.bind(null,
     gulp.tasks['check:phpcs'],
-    { src: ['foo'] },
+    { src: 'my/phpcs/dir' },
     { opt1: true }
   ));
 
   it('Should have a configured check:eslint task', checkTask.bind(null,
     gulp.tasks['check:eslint'],
-    { src: ['bar'] },
+    { src: 'my/eslint/dir' },
     { opt1: true }
   ));
 
   it('Should have a configured check:phplint task', checkTask.bind(null,
     gulp.tasks['check:phplint'],
-    { src: ['foo'], bin: '' },
+    { src: 'my/phplint/dir', bin: '' },
     { opt1: true }
   ));
 
@@ -126,19 +141,19 @@ describe('Configured tasks', function() {
 
   it('Should have a configured test:behat task', checkTask.bind(null,
     gulp.tasks['test:behat'],
-    { bin: '' },
+    { bin: 'my/behat/bin' },
     { opt1: true, junitDir: null }
   ));
 
   it('Should have a configured test:phantomas task', checkTask.bind(null,
     gulp.tasks['test:phantomas'],
-    { src: [], bin: './node_modules/.bin/phantomas' },
+    { src: 'my/phantomas/dir', bin: './node_modules/.bin/phantomas' },
     { opt1: true }
   ));
 
   it('Should have a configured test:backstop task', checkTask.bind(null,
     gulp.tasks['test:backstopjs'],
-    { src: null, artifactGlob: null, junitGlob: null, baseUrl: null },
+    { src: 'my/backstop/dir', artifactGlob: null, junitGlob: null, baseUrl: null },
     { opt1: true, junitDir: null }
   ));
 
