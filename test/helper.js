@@ -48,6 +48,9 @@ describe('Gulp Helper', function() {
     it('Should add nothing if there are no subtasks', function() {
       helper.addSubtasks(taskFactory, {}, {});
       sinon.assert.notCalled(gulp.task);
+
+      helper.addSubtasks(taskFactory);
+      sinon.assert.notCalled(gulp.task);
     });
 
     it('Should add subtasks if config is an object', function() {
@@ -80,6 +83,15 @@ describe('Gulp Helper', function() {
       expect(gulp.tasks['task:foo'].fn._config).to.eql({
         bar: 'baz'
       });
+    });
+
+    it('Should throw an error when given an invalid factory', function() {
+      expect(helper.addSubtasks).to.throw(Error, 'Task factory must be a function');
+    })
+
+    it('Should throw an error when given an invalid configuration', function() {
+      var cb = helper.addSubtasks.bind(helper, function() {}, false);
+      expect(cb).to.throw(Error, 'Invalid configuration type: boolean');
     });
 
     it('Should not consider the inherited properties of the config object', function() {
