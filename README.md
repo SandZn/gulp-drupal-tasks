@@ -15,15 +15,14 @@ Usage:
 1. Install this package using NPM
 2. Create a gulpfile that looks similar to this:
     ```javascript
-    var gulp = require('gulp-help')(require('gulp'));
-    var taskFactory = require('lastcall-gulp-drupal-tasks');
-    
-    // Load in configuration.
-    var config = require('./gulpconfig');
     // Load in CLI flags.
     var opts = require('yargs').argv;
-    
-    taskFactory(gulp, config, opts);
+  
+    var gulp = require('gulp-help')(require('gulp'));
+    var addTasks = require('./lastcall-gulp-drupal-tasks');
+  
+    var config = require('./gulpconfig');
+    addTasks(gulp, config, opts);
     ```
 3.  Create the `gulpconfig.js` file (documentation TK).
 
