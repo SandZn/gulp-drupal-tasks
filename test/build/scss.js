@@ -31,7 +31,9 @@ describe('SCSS Task', function() {
     expect(task._config).to.eql({
       src: [],
       dest: null,
-      maps: false,
+      concat: false,
+      min: true,
+      maps: './',
       prefix: { browsers: 'last 2 versions' },
       sassOptions: {}
     });

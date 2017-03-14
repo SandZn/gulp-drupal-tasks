@@ -45,8 +45,8 @@ describe('Javascript build task', function() {
       src: [],
       dest: null,
       concat: false,
-      min: false,
-      maps: false
+      min: true,
+      maps: './'
     });
     expect(task._opts).to.eql({});
   });
@@ -118,6 +118,7 @@ describe('Javascript build task', function() {
     var stream = factory({
       src: path.join(inpath, 'fixture.{js,txt}'),
       dest: outpath,
+      min: false,
       concat: 'concat.js',
     })();
     stream.on('error', done);
