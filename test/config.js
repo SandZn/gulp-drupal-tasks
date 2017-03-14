@@ -46,7 +46,7 @@ describe('Config adapter', function() {
 
     it('Should configure the test:behat task', function() {
       expect(parsed.test.behat).to.eql({
-        src: 'behat.yml'
+        configFile: 'behat.yml'
       });
     });
 
