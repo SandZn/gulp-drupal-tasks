@@ -20,7 +20,7 @@ describe('PHPCS Task', function() {
 
   it('Should use the default config', function() {
     var task = factory();
-    expect(task._config).to.eql({ src: [] });
+    expect(task._config).to.eql({ src: [], bin: 'vendor/bin/phpcs' });
     expect(task._opts).to.eql(undefined);
   });
 
