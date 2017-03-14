@@ -1,0 +1,36 @@
+{
+  "baseUrl": "http://example.com:8888",
+  "bowerJsonDirectory": "my/bower/dir",
+  "phpCheck": "my/php/dir",
+  "phpcsStandard": "my/phpcs/standard",
+  "jsCheck": "my/js/dir",
+  "behatFiles": "behat.yml",
+  "backstopjs": {
+    "src": "backstop/backstop.js",
+    "artifactGlob": "backstop/reports/**",
+    "junitGlob": "backstop/**.xml"
+  },
+  "phantomas": {
+    "src": "phantomas/phantomas.yml"
+  },
+  "scss": {
+    "theme": {
+      "src": "*.scss",
+      "dest": "dist/"
+    }
+  },
+  "js": {
+    "theme": {
+      "src": "*.js",
+      "dest": "dist/"
+    }
+  },
+  "copy": {
+    "theme": {
+      "src": "*.jpg",
+      "dest": "dist/"
+    }
+  }
+}
+
+

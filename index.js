@@ -1,9 +1,15 @@
 'use strict';
 var tasks = require('./lib');
+var configBuilder = require('./lib/config');
 
 var subtaskFactory = require('./lib/subtask').factory;
 
-module.exports = function (gulp, config, opts) {
+module.exports = {
+  buildConfig: configBuilder.adapt,
+  addTasks: addTasks
+}
+
+function addTasks(gulp, config, opts) {
   var describedTask = function(task, deps) {
     deps = deps || [];
     this.task(
@@ -25,34 +31,26 @@ module.exports = function (gulp, config, opts) {
     this.task(prefix, description, subtaskKeys);
   }.bind(gulp);
 
-  describedTask(tasks.install.composer({}, opts));
-  describedTask(tasks.install.bower({
-    src: config.bowerJsonDirectory
-  }, opts));
-  describedTask(tasks.check.composer({}, opts));
-  describedTask(tasks.check.phplint({
-    src: config.phpCheck
-  }, opts));
-  describedTask(tasks.check.phpcs({
-    src: config.phpCheck,
-  }, opts));
-  describedTask(tasks.check.eslint({
-    src: config.jsCheck
-  }, opts));
+  describedTask(tasks.install.composer(config.install.composer, opts));
+  describedTask(tasks.install.bower(config.install.bower, opts));
+  describedTask(tasks.check.composer(config.check.composer, opts));
+  describedTask(tasks.check.phplint(config.check.phplint, opts));
+  describedTask(tasks.check.phpcs(config.check.phpcs, opts));
+  describedTask(tasks.check.eslint(config.check.eslint, opts));
 
   function addSubtask(subtask) {
     describedTask(subtask);
   }
-  var scssTasks = subtaskFactory(tasks.build.scss, config.scss, opts);
-  var jsTasks = subtaskFactory(tasks.build.js, config.js, opts);
-  var copyTasks = subtaskFactory(tasks.build.copy, config.copy, opts);
+  var scssTasks = subtaskFactory(tasks.build.scss, config.build.scss, opts);
+  var jsTasks = subtaskFactory(tasks.build.js, config.build.js, opts);
+  var copyTasks = subtaskFactory(tasks.build.copy, config.build.copy, opts);
   scssTasks.forEach(addSubtask);
   jsTasks.forEach(addSubtask);
   copyTasks.forEach(addSubtask);
 
-  describedTask(tasks.test.behat({}, opts));
-  describedTask(tasks.test.phantomas({}, opts));
-  describedTask(tasks.test.backstop(config.backstopjs, opts));
+  describedTask(tasks.test.behat(config.test.behat, opts));
+  describedTask(tasks.test.phantomas(config.test.phantomas, opts));
+  describedTask(tasks.test.backstop(config.test.backstopjs, opts));
 
   metaTask('install', 'Run all install tasks.');
   metaTask('build:scss', 'Build CSS from SCSS');
@@ -63,4 +61,4 @@ module.exports = function (gulp, config, opts) {
   metaTask('test', 'Run all test steps.');
 
   describedTask(tasks.build.watch(gulp, opts), ['build']);
-};
+}
