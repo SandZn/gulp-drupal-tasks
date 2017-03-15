@@ -46,7 +46,7 @@
     "lodash.omit": "^4.5.0",
     "merge-stream": "^1.0.1",
     "npm-which": "^3.0.1",
-    "phantomas": "^1.18.0",
+    "phantomas": "git+https://github.com/macbre/phantomas.git#ce863710ec8ef7402e0967d0be793819cdddd486",
     "through2": "^2.0.3"
   }
 }
