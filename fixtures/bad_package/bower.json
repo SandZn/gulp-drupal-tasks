@@ -1,0 +1,5 @@
+{
+  "name": "bad_packge",
+  "version": "1.0.0",
+  this will fail to install because of invalid json.
+}
