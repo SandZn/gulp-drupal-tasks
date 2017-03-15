@@ -87,21 +87,15 @@ describe('Backstop task', function() {
     factory(cfg, opts);
   });
 
-  it('Should do nothing when called with an empty src', function() {
-    var task = factory();
-    task(function(err) {
-      expect(err).to.be.undefined;
-    });
-  });
-
   it('Should pass backstop when the screenshots match.', function(done) {
     var task = factory({
       src: path.join(inpath, 'backstop.js'),
       baseUrl: 'http://' + ip.address() + ':9763'
     });
-    task(function(err) {
-      done(err);
-    });
+    var stream = task();
+    stream.on('err', done);
+    stream.on('end', done);
+    stream.resume();
   });
 
   it('Should fail when the screenshots do not match.', function(done) {
@@ -109,11 +103,16 @@ describe('Backstop task', function() {
       src: path.join(inpath, 'backstop.js'),
       baseUrl: 'http://' + ip.address() + ':9763/nomatch'
     });
-    task(function(err) {
+    var stream = task();
+    stream.on('error', function(err) {
       expect(err).to.be.an.instanceOf(PluginError);
       expect(err.message).to.contain('Mismatch errors found');
       done();
     });
+    stream.on('end', function() {
+      done(new Error('Expected an error'));
+    });
+    stream.resume();
   });
 
   it('Should update reference screenshots when the rebase flag is passed.', function(done) {
@@ -123,10 +122,14 @@ describe('Backstop task', function() {
       // the outpath.
       baseUrl: 'http://' + ip.address() + ':9763/rebase'
     }, { rebase: true });
-    task(function(err) {
+
+    var stream = task();
+    stream.on('error', done);
+    stream.on('end', function() {
       expect(file(outpath + '/reference/visual_Homepage_0_document_0_phone.png')).to.exist;
-      done(err);
+      done();
     });
+    stream.resume();
   });
 
   // This kind of breaks the one thing per test rule, but these tests are really
@@ -141,11 +144,15 @@ describe('Backstop task', function() {
       junitDir: path.join(outpath, 'moved/junit'),
       artifactDir: path.join(outpath, 'moved/artifacts')
     });
-    task(function(err) {
+
+    var stream = task();
+    stream.on('error', done);
+    stream.on('end', function() {
       expect(file(path.join(outpath, 'moved/junit/xunit.xml'))).to.exist;
       expect(dir(path.join(outpath, 'moved/artifacts/reports'))).to.exist;
       expect(dir(path.join(outpath, 'moved/artifacts/comparisons'))).to.exist;
-      done(err);
+      done();
     });
+    stream.resume();
   });
 });
