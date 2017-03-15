@@ -35,7 +35,7 @@ describe('Behat Task', function() {
 
   it('Should run behat', function(done) {
     var stream = factory({
-      configFile: path.join(inpath, 'behat.yml'),
+      src: path.join(inpath, 'behat.yml'),
       bin: behatBin,
       suite: 'passing',
       silent: true,
@@ -47,7 +47,7 @@ describe('Behat Task', function() {
 
   it('Should throw an error on behat failures', function(done) {
     var stream = factory({
-      configFile: path.join(inpath, 'behat.yml'),
+      src: path.join(inpath, 'behat.yml'),
       bin: behatBin,
       suite: 'failing',
       silent: true,
