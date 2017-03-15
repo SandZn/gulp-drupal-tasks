@@ -49,7 +49,7 @@ describe('Phantomas Task', function() {
     var task = factory();
     expect(task._config).to.eql({
       src: [],
-      bin: './node_modules/.bin/phantomas'
+      bin: null,
     });
     expect(task._opts).to.eql({});
   });
