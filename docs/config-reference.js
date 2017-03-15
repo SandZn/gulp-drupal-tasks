@@ -2,8 +2,8 @@
 
   // Set up some common variables here that will be reused below.
   var baseUrl = 'http://localhost:8888';
-  var phpCheck = "**.php";
-  var jsCheck = "**.js"
+  var phpCheck = '**.php';
+  var jsCheck = '**.js';
 
   /**
    * This is the sample configuration file for these tasks.
@@ -14,59 +14,59 @@
    */
   var config = {
     // The config version.  Right now there's only 1.
-    "version": 1,
+    'version': 1,
 
-    "bower": {
-      "src": "./bower.json"
+    'bower': {
+      'src': './bower.json'
     },
-    "composer": {
-      "src": "./composer.json"
+    'composer': {
+      'src': './composer.json'
     },
-    "phpcs": {
+    'phpcs': {
       // src is a gulp glob
-      "src": phpCheck
+      'src': phpCheck
     },
-    "phplint": {
+    'phplint': {
       // src is a gulp glob
-      "src": phpCheck
+      'src': phpCheck
     },
-    "eslint": {
+    'eslint': {
       // src is a gulp glob
-      "src": jsCheck
+      'src': jsCheck
     },
-    "behat": {
-      "configFile": "behat.yml"
+    'behat': {
+      'configFile': 'behat.yml'
     },
-    "backstopjs": {
-      "src": "backstop/backstop.js",
-      "baseUrl": baseUrl,
-      "artifactGlob": "backstop/reports/**",
-      "junitGlob": "backstop/**.xml"
+    'backstopjs': {
+      'src': 'backstop/backstop.js',
+      'baseUrl': baseUrl,
+      'artifactGlob': 'backstop/reports/**',
+      'junitGlob': 'backstop/**.xml'
     },
-    "phantomas": {
-      "src": "phantomas/phantomas.yml",
-      "baseUrl": baseUrl
+    'phantomas': {
+      'src': 'phantomas/phantomas.yml',
+      'baseUrl': baseUrl
     },
-    "scss": {
-      "theme": {
+    'scss': {
+      'theme': {
         // src is a gulp glob
-        "src": "*.scss",
-        "dest": "dist/",
-        "minify": true,
+        'src': '*.scss',
+        'dest': 'dist/',
+        'minify': true,
       }
     },
-    "js": {
-      "theme": {
-        "src": "*.js",
-        "dest": "dist/",
-        "minify": true,
+    'js': {
+      'theme': {
+        'src': '*.js',
+        'dest': 'dist/',
+        'minify': true,
       }
     },
-    "copy": {
-      "theme": {
-        "src": "*.jpg",
-        "imagemin": true,
-        "dest": "dist/"
+    'copy': {
+      'theme': {
+        'src': '*.jpg',
+        'imagemin': true,
+        'dest': 'dist/'
       }
     }
   };
