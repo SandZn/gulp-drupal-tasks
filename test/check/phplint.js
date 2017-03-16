@@ -8,9 +8,8 @@ var inpath = path.join(__dirname, '../../fixtures');
 
 describe('PHPLint Task', function() {
 
-  it('Should do nothing if it is called with an empty config', function() {
-    var stream = factory()();
-    expect(stream).to.be.an('object');
+  it('Should do nothing if it is called with an empty config', function(done) {
+    factory()(done);
   });
 
   it('Should fail on an invalid config or opts being passed', function() {
@@ -31,28 +30,20 @@ describe('PHPLint Task', function() {
   });
 
   it('Should pass valid files', function(done) {
-    var stream = factory({
+    var task = factory({
       src: path.join(inpath, 'valid.php')
-    })();
-    stream.on('error', done);
-    stream.on('end', function() {
-      done();
     });
-    stream.resume();
+    task(done);
   });
 
   it('Should fail invalid files', function(done) {
-    var stream = factory({
+    var task = factory({
       src: path.join(inpath, 'invalid.php')
-    })();
-    stream.on('error', function(err) {
-      expect(err).to.be.instanceOf(PluginError);
+    });
+    task(function(err) {
+      expect(err).to.be.instanceOf(Error);
       expect(err.message).to.contain('syntax error, unexpected');
       done();
     });
-    stream.on('end', function() {
-      done(new Error('Expected an error to be thrown'));
-    });
-    stream.resume();
   });
 });
