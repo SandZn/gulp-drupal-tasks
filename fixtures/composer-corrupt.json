@@ -1,0 +1,8 @@
+{
+    "autoload": {
+      this file is broken.
+        "psr-4": {
+            "Test\\": "src"
+        }
+    }
+}

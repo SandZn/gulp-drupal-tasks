@@ -19,9 +19,9 @@ describe('Composer task', function() {
 
   it('Should should fall back to a default config', function() {
     var task = factory();
-    expect(task._config).to.eql({ src: './composer.json' });
+    expect(task._config).to.eql({ src: './composer.json', bin: null });
     var task = factory({});
-    expect(task._config).to.eql({ src: './composer.json' });
+    expect(task._config).to.eql({ src: './composer.json', bin: null });
   });
 
   it('Should fail on an invalid config or opts being passed', function() {
@@ -42,20 +42,43 @@ describe('Composer task', function() {
     // Use the invalid composer that does not have a name property,
     // because it skips a lot of network calls that way.
     var task = factory({
-      src: inpath + '/composer-invalid.json',
-      quiet: true
-    });
+      src: inpath + '/composer-invalid.json'
+    }, { silent: true });
 
-    task(function() {
+    var stream = task();
+    stream.on('error', done);
+    stream.on('end', function() {
       expect(dir(outpath)).to.exist;
       done();
     });
+    stream.resume();
   });
 
   it('Should fail if there is an error', function(done) {
-    var task = factory({ src: path.join(inpath, 'nonexistent') });
-    task(function(err) {
-      expect(err).to.be.an.instanceof(PluginError);
+    var task = factory({
+      src: inpath + '/composer-corrupt.json',
+    }, { silent: true });
+    var stream = task();
+    stream.on('error', function(err) {
+      expect(err).to.be.an.instanceof(Error);
+      expect(err.message).to.contain('Exited with code 1');
+      done();
+    });
+    stream.on('end', function() {
+      done(new Error('Expected error to be thrown.'));
+    });
+    stream.resume();
+  });
+
+  it('Should fail for an invalid bin', function(done) {
+    var task = factory({
+      src: inpath + '/composer-invalid.json',
+      bin: inpath + '/nonexistent',
+    }, { silent: true });
+    var stream = task();
+    stream.on('error', function(err) {
+      expect(err).to.be.an.instanceof(Error);
+      expect(err.message).to.contain('ENOENT');
       done();
     });
   });
