@@ -48,19 +48,20 @@ describe('Backstop task', function() {
   beforeEach(rimraf.bind(null, outpath, {}));
 
   it('Should should fall back to a default config', function() {
-    var task = factory();
-    expect(task._config).to.eql({
-      src: null,
-      junitGlob: null,
-      artifactGlob: null,
-      baseUrl: null
-    });
-    var task = factory({});
-    expect(task._config).to.eql({
-      src: null,
-      junitGlob: null,
-      artifactGlob: null,
-      baseUrl: null
+    var configs = [undefined, {}];
+    configs.forEach(function(config) {
+      var task = factory(config);
+      expect(task._config).to.eql({
+        src: null,
+        junitGlob: null,
+        artifactGlob: null,
+        baseUrl: null
+      });
+      expect(task._opts).to.eql({
+        junitDir: null,
+        artifactDir: null,
+        silent: false
+      });
     });
   });
 
@@ -91,7 +92,7 @@ describe('Backstop task', function() {
     var task = factory({
       src: path.join(inpath, 'backstop.js'),
       baseUrl: 'http://' + ip.address() + ':9763'
-    });
+    }, { silent: true });
     var stream = task();
     stream.on('err', done);
     stream.on('end', done);
@@ -102,11 +103,11 @@ describe('Backstop task', function() {
     var task = factory({
       src: path.join(inpath, 'backstop.js'),
       baseUrl: 'http://' + ip.address() + ':9763/nomatch'
-    });
+    }, { silent: true });
     var stream = task();
     stream.on('error', function(err) {
-      expect(err).to.be.an.instanceOf(PluginError);
-      expect(err.message).to.contain('Mismatch errors found');
+      expect(err).to.be.an.instanceOf(Error);
+      expect(err.message).to.contain('Backstopjs exited with code 1');
       done();
     });
     stream.on('end', function() {
@@ -121,7 +122,7 @@ describe('Backstop task', function() {
       // Use an alternate URL so we know to switch the reference directory to
       // the outpath.
       baseUrl: 'http://' + ip.address() + ':9763/rebase'
-    }, { rebase: true });
+    }, { rebase: true, silent: true });
 
     var stream = task();
     stream.on('error', done);
@@ -142,7 +143,8 @@ describe('Backstop task', function() {
       artifactGlob: path.join(inpath, 'out/{reports,comparisons}/**')
     }, {
       junitDir: path.join(outpath, 'moved/junit'),
-      artifactDir: path.join(outpath, 'moved/artifacts')
+      artifactDir: path.join(outpath, 'moved/artifacts'),
+      silent: true
     });
 
     var stream = task();

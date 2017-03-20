@@ -3,8 +3,13 @@ var path = require('path');
 var factory = require('../../lib/test/phantomas');
 var http = require('http');
 var rimraf = require('rimraf');
-var expect = require('chai').expect;
+var chai = require('chai');
 var PluginError = require('gulp-util').PluginError;
+
+var chaiFiles = require('chai-files');
+chai.use(chaiFiles);
+var expect = chai.expect;
+var file = chaiFiles.file;
 
 var inpath = path.join(__dirname, '../../fixtures');
 var outpath = path.join(__dirname, '../../out-fixtures');
@@ -46,12 +51,17 @@ describe('Phantomas Task', function() {
   });
 
   it('Should use the default config', function() {
-    var task = factory();
-    expect(task._config).to.eql({
-      src: [],
-      bin: null,
+    var configs = [undefined, {}];
+    configs.forEach(function(config) {
+      var task = factory(config);
+      expect(task._config).to.eql({
+        src: [],
+        bin: null,
+        baseUrl: null,
+        artifactGlob: null
+      });
+      expect(task._opts).to.eql({ silent: false, artifactDir: null });
     });
-    expect(task._opts).to.eql({});
   });
 
   it('Should not modify the config or opts object', function() {
@@ -61,22 +71,30 @@ describe('Phantomas Task', function() {
   });
 
   it('Should run phantomas', function(done) {
+    var outArtifacts = path.join(outpath, 'distartifacts');
     var stream = factory({
       src: path.join(inpath, 'phantomas.yaml'),
-      silent: true,
-    })();
+      baseUrl: 'http://127.0.0.1:9763',
+      artifactGlob: path.join(outpath, 'srcartifacts', '*'),
+    }, { silent: true,  artifactDir: outArtifacts })();
     stream.on('error', done);
-    stream.on('end', done);
+    stream.on('end', function() {
+      expect(file(path.join(outArtifacts, 'homepage.har'))).to.exist;
+      done();
+    });
     stream.resume();
   });
 
   it('Should fail if the performance budget is exceeded', function(done) {
+    var outArtifacts = path.join(outpath, 'distartifacts');
     var task = factory({
       src: path.join(inpath, 'phantomas-fail.yaml'),
-      silent: true,
-    });
+      baseUrl: 'http://127.0.0.1:9763',
+      artifactGlob: path.join(outpath, 'srcartifacts', '*')
+    }, { silent: true, artifactDir: outArtifacts });
     var stream = task();
     stream.on('error', function() {
+      expect(file(path.join(outArtifacts, 'homepage.har'))).to.exist;
       done();
     });
     stream.on('end', function() {
@@ -84,18 +102,4 @@ describe('Phantomas Task', function() {
     });
     stream.resume();
   });
-
-//  it('Should copy report files to the destination', function(done) {
-//    var stream = factory({
-//      src: path.join(inpath, 'phantomas.yaml'),
-//      silent: true,
-//      dest: outpath
-//    })();
-//    stream.on('error', done.fail);
-//    stream.on('end', function() {
-//      expect(file(path.join(outpath, 'phantomas.txt'))).to.exist;
-//      done();
-//    });
-//    stream.resume();
-//  });
 });

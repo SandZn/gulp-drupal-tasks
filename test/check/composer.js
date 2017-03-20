@@ -10,9 +10,9 @@ describe('Composer Validate Task', function() {
 
   it('Should should fall back to a default config', function() {
     var task = factory();
-    expect(task._config).to.eql({ src: './composer.json' });
+    expect(task._config).to.eql({ src: './composer.json', bin: null });
     var task = factory({});
-    expect(task._config).to.eql({ src: './composer.json' });
+    expect(task._config).to.eql({ src: './composer.json', bin: null });
   });
 
   it('Should fail on an invalid config or opts being passed', function() {
@@ -32,19 +32,27 @@ describe('Composer Validate Task', function() {
   it('Should pass composer validate for a valid composer file', function(done) {
     var task = factory({
       src: inpath + '/composer-valid.json'
-    });
-    task(done);
+    }, { silent: true });
+    var stream = task();
+    stream.on('error', done);
+    stream.on('end', done);
+    stream.resume();
   });
 
   it('Should fail composer validate for an invalid composer file', function(done) {
     var task = factory({
       src: inpath + '/composer-invalid.json'
-    });
+    }, { silent: true });
 
-    task(function(err) {
-      expect(err).to.be.instanceof(PluginError);
-      expect(err.message).to.contain('is valid for simple usage with composer');
+    var stream = task();
+    stream.on('error', function(err) {
+      expect(err).to.be.instanceof(Error);
+      expect(err.message).to.contain('Exited with code 2');
       done();
     });
+    stream.on('done', function() {
+      done(new Error('Expected error to be thrown.'));
+    });
+    stream.resume();
   });
 });

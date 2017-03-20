@@ -19,9 +19,9 @@ describe('Bower task', function() {
 
   it('Should should fall back to a default config', function() {
     var task = factory();
-    expect(task._config).to.eql({ src: [] });
+    expect(task._config).to.eql({ src: [], bin: null });
     var task = factory({});
-    expect(task._config).to.eql({ src: [] });
+    expect(task._config).to.eql({ src: [], bin: null });
   });
 
   it('Should fail on an invalid config or opts being passed', function() {
@@ -51,16 +51,34 @@ describe('Bower task', function() {
   });
 
   it('Should fail bower install if there is an error', function(done) {
-    var stream = factory({ src: path.join(inpath, 'bad_package') })();
+    var stream = factory({ src: path.join(inpath, 'bad_package') }, { silent: true })();
     stream.on('error', function(err) {
-      expect(err).to.be.instanceOf(PluginError);
-      expect(err.message).to.contain('Unexpected token t in JSON');
+      expect(err).to.be.instanceOf(Error);
+      expect(err.message).to.contain('Exited with code 1');
       done();
     });
-    stream.on('end', function() {
-      done(new Error('Task did not fail'));
+    stream.on('end',fail(done));
+    stream.resume();
+  });
+
+  it('Should fail for an invalid bin', function(done) {
+    var task = factory({
+      src: inpath + '/bower.json',
+      bin: inpath + '/nonexistent',
+    }, { silent: true });
+    var stream = task();
+    stream.on('end', fail(done));
+    stream.on('error', function(err) {
+      expect(err).to.be.an.instanceof(Error);
+      expect(err.message).to.contain('ENOENT');
+      done();
     });
     stream.resume();
-
   });
+
+  function fail(cb) {
+    return function() {
+      cb(new Error('Task should have thrown an error'));
+    };
+  }
 });

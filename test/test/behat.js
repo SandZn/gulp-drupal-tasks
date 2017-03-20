@@ -17,9 +17,12 @@ describe('Behat Task', function() {
   });
 
   it('Should use the default config', function() {
-    var task = factory();
-    expect(task._config).to.eql({ bin: '' });
-    expect(task._opts).to.eql({ junitDir: null });
+    var configs = [undefined, {}];
+    configs.forEach(function(config) {
+      var task = factory(config);
+      expect(task._config).to.eql({ bin: '', baseUrl: null, suite: null });
+      expect(task._opts).to.eql({ junitDir: null, silent: false });
+    });
   });
 
   it('Should fail on an invalid config or opts being passed', function() {
@@ -37,9 +40,8 @@ describe('Behat Task', function() {
     var stream = factory({
       src: path.join(inpath, 'behat.yml'),
       bin: behatBin,
-      suite: 'passing',
-      silent: true,
-    })();
+      suite: 'passing'
+    }, { silent: true })();
     stream.on('error', done);
     stream.on('end', done);
     stream.resume();
@@ -49,9 +51,8 @@ describe('Behat Task', function() {
     var stream = factory({
       src: path.join(inpath, 'behat.yml'),
       bin: behatBin,
-      suite: 'failing',
-      silent: true,
-    })();
+      suite: 'failing'
+    }, { silent: true })();
     stream.on('error', function() {
       done();
     });
