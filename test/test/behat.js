@@ -20,7 +20,7 @@ describe('Behat Task', function() {
     var configs = [undefined, {}];
     configs.forEach(function(config) {
       var task = factory(config);
-      expect(task._config).to.eql({ bin: '', baseUrl: null, suite: null });
+      expect(task._config).to.eql({ bin: '', baseUrl: undefined, suite: undefined });
       expect(task._opts).to.eql({ junitDir: null, silent: false });
     });
   });
@@ -29,6 +29,23 @@ describe('Behat Task', function() {
     expect(factory.bind(factory, '')).to.throw(PluginError, 'config must be an object');
     expect(factory.bind(factory, {}, '')).to.throw(PluginError, 'opts must be an object');
   });
+
+  var invalidConfigTests = {
+    'Should fail on an invalid src': {
+      config: {src: {}},
+      message: 'src must be a string',
+    },
+    'Should fail on an invalid suite': {
+      config: {suite: {}},
+      message: 'suite must be a string',
+    }
+  };
+
+  for(t in invalidConfigTests) {
+    it(t, function() {
+      expect(factory.bind(factory, invalidConfigTests[t].config, invalidConfigTests[t].opts)).to.throw(PluginError, invalidConfigTests[t].message);
+    })
+  }
 
   it('Should not modify the config or opts object', function() {
     var cfg = Object.freeze({});

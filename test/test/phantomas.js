@@ -102,4 +102,16 @@ describe('Phantomas Task', function() {
     });
     stream.resume();
   });
+
+  it('Should not fail if no artifact output is defined', function(done) {
+    var stream = factory({
+      src: path.join(inpath, 'phantomas.yaml'),
+      baseUrl: 'http://127.0.0.1:9763',
+    }, { silent: true})();
+    stream.on('error', done);
+    stream.on('end', function() {
+      done();
+    });
+    stream.resume();
+  });
 });
