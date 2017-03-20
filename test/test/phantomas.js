@@ -74,6 +74,7 @@ describe('Phantomas Task', function() {
     var outArtifacts = path.join(outpath, 'distartifacts');
     var stream = factory({
       src: path.join(inpath, 'phantomas.yaml'),
+      baseUrl: 'http://127.0.0.1:9763',
       artifactGlob: path.join(outpath, 'srcartifacts', '*'),
     }, { silent: true,  artifactDir: outArtifacts })();
     stream.on('error', done);
@@ -88,6 +89,7 @@ describe('Phantomas Task', function() {
     var outArtifacts = path.join(outpath, 'distartifacts');
     var task = factory({
       src: path.join(inpath, 'phantomas-fail.yaml'),
+      baseUrl: 'http://127.0.0.1:9763',
       artifactGlob: path.join(outpath, 'srcartifacts', '*')
     }, { silent: true, artifactDir: outArtifacts });
     var stream = task();
