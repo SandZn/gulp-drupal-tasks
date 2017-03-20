@@ -41,6 +41,7 @@
     "gulp-sourcemaps": "^2.4.0",
     "gulp-util": "^3.0.8",
     "merge-stream": "^1.0.1",
+    "mkdir-recursive": "^0.3.0",
     "npm-which": "^3.0.1",
     "phantomas": "git+https://github.com/macbre/phantomas.git#ce863710ec8ef7402e0967d0be793819cdddd486",
     "phplint": "^1.7.1",

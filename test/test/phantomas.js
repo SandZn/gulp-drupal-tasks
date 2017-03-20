@@ -107,7 +107,7 @@ describe('Phantomas Task', function() {
     var stream = factory({
       src: path.join(inpath, 'phantomas.yaml'),
       baseUrl: 'http://127.0.0.1:9763',
-    }, { silent: true})();
+    }, { silent: true })();
     stream.on('error', done);
     stream.on('end', function() {
       done();

@@ -32,19 +32,19 @@ describe('Behat Task', function() {
 
   var invalidConfigTests = {
     'Should fail on an invalid src': {
-      config: {src: {}},
+      config: { src: {} },
       message: 'src must be a string',
     },
     'Should fail on an invalid suite': {
-      config: {suite: {}},
+      config: { suite: {} },
       message: 'suite must be a string',
     }
   };
 
-  for(t in invalidConfigTests) {
+  for (t in invalidConfigTests) {
     it(t, function() {
       expect(factory.bind(factory, invalidConfigTests[t].config, invalidConfigTests[t].opts)).to.throw(PluginError, invalidConfigTests[t].message);
-    })
+    });
   }
 
   it('Should not modify the config or opts object', function() {

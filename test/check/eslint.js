@@ -1,12 +1,21 @@
 
 var path = require('path');
 var factory = require('../../lib/check/eslint');
-var expect = require('chai').expect;
 var PluginError = require('gulp-util').PluginError;
+var rimraf = require('rimraf');
+
+var chai = require('chai');
+var chaiFiles = require('chai-files');
+chai.use(chaiFiles);
+var expect = chai.expect;
+var file = chaiFiles.file;
 
 var inpath = path.join(__dirname, '../../fixtures');
+var outpath = path.join(__dirname, '../../out-fixtures');
 
 describe('ESLint Task', function() {
+  beforeEach(rimraf.bind(null, outpath, {}));
+  afterEach(rimraf.bind(null, outpath, {}));
 
   it('Should do nothing if it is called with an empty config', function() {
     var stream = factory()();
@@ -57,6 +66,21 @@ describe('ESLint Task', function() {
     })();
     stream.on('error', done);
     stream.on('end', done);
+    stream.resume();
+  });
+
+  it('Should output a junit report', function(done) {
+    var stream = factory({
+      src: [
+        path.join(inpath, '*.nonexistent'),
+        path.join(inpath, '*.stillnonexistent')
+      ]
+    }, { junitDir: path.join(outpath) })();
+    stream.on('error', done);
+    stream.on('end', function() {
+      expect(file(path.join(outpath, 'eslint.xml'))).to.exist;
+      done();
+    });
     stream.resume();
   });
 
