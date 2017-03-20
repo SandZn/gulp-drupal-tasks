@@ -20,8 +20,8 @@ describe('PHPCS Task', function() {
 
   it('Should use the default config', function() {
     var task = factory();
-    expect(task._config).to.eql({ src: [], bin: null });
-    expect(task._opts).to.eql(undefined);
+    expect(task._config).to.eql({ src: [], bin: null, standard: null });
+    expect(task._opts).to.eql({ silent: false });
   });
 
   it('Should not modify the config or opts object', function() {
@@ -33,10 +33,10 @@ describe('PHPCS Task', function() {
   it('Should fail for an invalid file', function(done) {
     var stream = factory({
       src: path.join(inpath, 'invalid.php')
-    })();
+    }, { silent: true })();
     stream.on('error', function(err) {
       expect(err).to.be.instanceOf(PluginError);
-      expect(err.message).to.contain('PHP Code Sniffer failed on');
+      expect(err.message).to.contain('PHP Code Sniffer failed');
       done();
     });
     stream.on('end', function() {
@@ -50,9 +50,7 @@ describe('PHPCS Task', function() {
       src: path.join(inpath, 'valid.php'),
     })();
     stream.on('error', done);
-    stream.on('end', function() {
-      done();
-    });
+    stream.on('end', done);
     stream.resume();
   });
 });
