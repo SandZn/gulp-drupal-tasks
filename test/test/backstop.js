@@ -60,7 +60,8 @@ describe('Backstop task', function() {
       expect(task._opts).to.eql({
         junitDir: null,
         artifactDir: null,
-        silent: false
+        silent: false,
+        baseUrl: null
       });
     });
   });
@@ -96,6 +97,22 @@ describe('Backstop task', function() {
     var stream = task();
     stream.on('err', done);
     stream.on('end', done);
+    stream.resume();
+  });
+
+  it('Should accept a baseUrl from opts', function(done) {
+    var task = factory({
+      src: path.join(inpath, 'backstop.js'),
+      baseUrl: 'http://127.0.0.1:1111',
+    }, {
+      silent: true,
+      baseUrl: 'http://' + ip.address() + ':9763'
+    });
+    var stream = task();
+    stream.on('error', done);
+    stream.on('end', function() {
+      done();
+    });
     stream.resume();
   });
 

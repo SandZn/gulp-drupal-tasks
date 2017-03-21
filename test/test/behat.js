@@ -21,7 +21,7 @@ describe('Behat Task', function() {
     configs.forEach(function(config) {
       var task = factory(config);
       expect(task._config).to.eql({ bin: '', baseUrl: undefined, suite: undefined });
-      expect(task._opts).to.eql({ junitDir: null, silent: false });
+      expect(task._opts).to.eql({ junitDir: null, silent: false, baseUrl: null });
     });
   });
 
