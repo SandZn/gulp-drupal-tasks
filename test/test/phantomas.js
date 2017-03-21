@@ -60,7 +60,11 @@ describe('Phantomas Task', function() {
         baseUrl: null,
         artifactGlob: null
       });
-      expect(task._opts).to.eql({ silent: false, artifactDir: null });
+      expect(task._opts).to.eql({
+        silent: false,
+        artifactDir: null,
+        baseUrl: null
+      });
     });
   });
 
@@ -80,6 +84,20 @@ describe('Phantomas Task', function() {
     stream.on('error', done);
     stream.on('end', function() {
       expect(file(path.join(outArtifacts, 'homepage.har'))).to.exist;
+      done();
+    });
+    stream.resume();
+  });
+
+  it('Should accept a baseUrl from opts', function(done) {
+    var stream = factory({
+      src: path.join(inpath, 'phantomas.yaml'),
+      baseUrl: 'http://127.0.0.1:1111',
+    }, {
+      silent: true,
+      baseUrl: 'http://127.0.0.1:9763' })();
+    stream.on('error', done);
+    stream.on('end', function() {
       done();
     });
     stream.resume();
