@@ -144,4 +144,17 @@ describe('SCSS Task', function() {
     });
     stream.resume();
   });
+
+  it('Should import tilde paths', function (done) {
+    var stream = factory({
+      src: path.join(inpath, 'fixture-import.scss'),
+      dest: outpath
+    })();
+    stream.on('error', done);
+    stream.on('end', function() {
+      var cssFile = file(path.join(outpath, 'fixture-import.css'));
+      expect(cssFile).to.contain('#navbar');
+      done();
+    });
+  });
 });
