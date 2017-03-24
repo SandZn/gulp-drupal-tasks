@@ -36,4 +36,4 @@ Guidelines for development:
 
 Publishing on NPM
 -----------------
-When you are ready to release a new version, run `npm publish X.X.X`.  This will update the version in package.json, and create a new tagged commit.  Just push it to github using `git push origin master --follow-tags`, and CircleCI will deploy it to NPM.
+When you are ready to release a new version, run `npm version X.X.X`.  This will update the version in package.json, and create a new tagged commit.  Just push it to github using `git push origin master --follow-tags`, and CircleCI will deploy it to NPM.
