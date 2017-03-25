@@ -43,6 +43,7 @@ describe('PHPUnit Task', function() {
     { it: 'Should fail on an invalid baseurl from opts', opts: { baseUrl: {} }, message: 'baseUrl must be a string' },
     { it: 'Should fail on an invalid testsuite', config: { testsuite: {} }, message: 'testsuite must be a string' },
     { it: 'Should fail on an invalid group', config: { group: {}, message: 'group must be a string' } },
+    { it: 'Should fail on an invalid junitDir', opts: { junitDir: {}, message: 'junitDir must be a string' } },
   ];
 
   invalidConfigTests.forEach(function(test) {
@@ -60,7 +61,6 @@ describe('PHPUnit Task', function() {
   it('Should run phpunit', function(done) {
     var stream = factory({
       src: path.join(inpath, 'phpunit.xml.dist'),
-//      bin: phpunitBin,
       testsuite: 'passing'
     }, { silent: true })();
     stream.on('error', done);
@@ -86,7 +86,6 @@ describe('PHPUnit Task', function() {
   it('Should throw an error on phpunit failures', function(done) {
     var stream = factory({
       src: path.join(inpath, 'phpunit.xml.dist'),
-//      bin: phpunitBin,
       suite: 'failing'
     }, { silent: true })();
     stream.on('error', function() {
@@ -101,7 +100,6 @@ describe('PHPUnit Task', function() {
   it('Should pass the group through', function(done) {
     var stream = factory({
       src: path.join(inpath, 'phpunit.xml.dist'),
-//      bin: phpunitBin,
       group: 'grouped',
     }, { silent: true })();
     stream.on('error', done);
@@ -112,7 +110,6 @@ describe('PHPUnit Task', function() {
   it('Should pass baseUrl through', function(done) {
     var stream = factory({
       src: path.join(inpath, 'phpunit.xml.dist'),
-//      bin: phpunitBin,
       suite: 'baseurl'
     }, {
       silent: true,
@@ -126,7 +123,6 @@ describe('PHPUnit Task', function() {
   it('Should generate junit output', function(done) {
     var stream = factory({
       src: path.join(inpath, 'phpunit.xml.dist'),
-//      bin: phpunitBin,
       suite: 'passing'
     }, {
       silent: true,

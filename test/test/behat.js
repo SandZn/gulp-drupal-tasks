@@ -1,20 +1,21 @@
 
 var path = require('path');
 var factory = require('../../lib/test/behat');
-var which = require('which');
-var expect = require('chai').expect;
 var PluginError = require('gulp-util').PluginError;
+var rimraf = require('rimraf');
+
+var chai = require('chai');
+var chaiFiles = require('chai-files');
+chai.use(chaiFiles);
+var expect = chai.expect;
+var file = chaiFiles.file;
 
 var inpath = path.join(__dirname, '../../fixtures');
+var outpath = path.join(__dirname, '../../out-fixtures');
 
 describe('Behat Task', function() {
-  var behatBin;
-  before(function(done) {
-    which('behat', function(err, resolvedPath) {
-      behatBin = resolvedPath;
-      done(err);
-    });
-  });
+  beforeEach(rimraf.bind(null, outpath, {}));
+  afterEach(rimraf.bind(null, outpath, {}));
 
   it('Should use the default config', function() {
     var configs = [undefined, {}];
@@ -30,22 +31,22 @@ describe('Behat Task', function() {
     expect(factory.bind(factory, {}, '')).to.throw(PluginError, 'opts must be an object');
   });
 
-  var invalidConfigTests = {
-    'Should fail on an invalid src': {
-      config: { src: {} },
-      message: 'src must be a string',
-    },
-    'Should fail on an invalid suite': {
-      config: { suite: {} },
-      message: 'suite must be a string',
-    }
-  };
+  var invalidConfigTests = [
+    { it: 'Should fail on invalid config', config: '', message: 'config must be an object' },
+    { it: 'Should fail on invalid opts', opts: '', message: 'opts must be an object' },
+    { it: 'Should fail on an invalid bin', config: { bin: {} }, message: 'bin must be a string' },
+    { it: 'Should fail on an invalid src', config: { src: {} }, message: 'src must be a string' },
+    { it: 'Should fail on an invalid baseurl', config: { baseUrl: {} }, message: 'baseUrl must be a string' },
+    { it: 'Should fail on an invalid baseurl from opts', opts: { baseUrl: {} }, message: 'baseUrl must be a string' },
+    { it: 'Should fail on an invalid suite', config: { suite: {} }, message: 'suite must be a string' },
+    { it: 'Should fail on an invalid junitDir', opts: { junitDir: {}, message: 'junitDir must be a string' } },
+  ];
 
-  for (t in invalidConfigTests) {
-    it(t, function() {
-      expect(factory.bind(factory, invalidConfigTests[t].config, invalidConfigTests[t].opts)).to.throw(PluginError, invalidConfigTests[t].message);
+  invalidConfigTests.forEach(function(test) {
+    it(test.it, function() {
+      expect(factory.bind(null, test.config, test.opts)).to.throw(PluginError, test.message);
     });
-  }
+  });
 
   it('Should not modify the config or opts object', function() {
     var cfg = Object.freeze({});
@@ -56,7 +57,6 @@ describe('Behat Task', function() {
   it('Should run behat', function(done) {
     var stream = factory({
       src: path.join(inpath, 'behat.yml'),
-      bin: behatBin,
       suite: 'passing'
     }, { silent: true })();
     stream.on('error', done);
@@ -64,10 +64,10 @@ describe('Behat Task', function() {
     stream.resume();
   });
 
-  it('Should throw an error on behat failures', function(done) {
+  it('Should throw an error on an invalid phpunit bin', function(done) {
     var stream = factory({
-      src: path.join(inpath, 'behat.yml'),
-      bin: behatBin,
+      src: path.join(inpath, 'phpunit.xml.dist'),
+      bin: '/some/nonexistent/path',
       suite: 'failing'
     }, { silent: true })();
     stream.on('error', function() {
@@ -75,6 +75,36 @@ describe('Behat Task', function() {
     });
     stream.on('end', function() {
       throw new Error('Task did not fail.');
+    });
+    stream.resume();
+  });
+
+  it('Should throw an error on behat failures', function(done) {
+    var stream = factory({
+      src: path.join(inpath, 'behat.yml'),
+      suite: 'failing'
+    }, { silent: true })();
+    stream.on('error', function() {
+      done();
+    });
+    stream.on('end', function() {
+      throw new Error('Task did not fail.');
+    });
+    stream.resume();
+  });
+
+  it('Should output a junit file', function(done) {
+    var stream = factory({
+      src: path.join(inpath, 'behat.yml'),
+      suite: 'passing'
+    }, {
+      silent: true,
+      junitDir: outpath,
+    })();
+    stream.on('error', done);
+    stream.on('end', function() {
+      expect(file(path.join(outpath, 'behat', 'passing.xml'))).to.exist;
+      done();
     });
     stream.resume();
   });
