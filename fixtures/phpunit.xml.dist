@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit>
+    <php>
+        <!-- SIMPLETEST_BASE_URL is set through gulp flags. -->
+        <env name="SIMPLETEST_BASE_URL" value=""/>
+    </php>
+    <testsuites>
+        <testsuite name="passing">
+            <directory suffix="GoodTest.php">./test_package</directory>
+        </testsuite>
+        <testsuite name="failing">
+            <directory suffix="GoodTest.php">./bad_package</directory>
+        </testsuite>
+        <testsuite name="baseurl">
+            <directory suffix="BaseUrlTest.php">./test_package</directory>
+        </testsuite>
+    </testsuites>
+
+</phpunit>
