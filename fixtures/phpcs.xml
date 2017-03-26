@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="lcm-gulp-tasks-check-test">
+    <description>Default PHP CodeSniffer configuration for Drupal core.</description>
+    <file>.</file>
+
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="5"/>
+        </properties>
+    </rule>
+
+</ruleset>

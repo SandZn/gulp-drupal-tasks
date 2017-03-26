@@ -26,9 +26,16 @@ describe('Bower task', function() {
     expect(task._opts).to.eql({ silent: false });
   });
 
-  it('Should fail on an invalid config or opts being passed', function() {
-    expect(factory.bind(factory, '')).to.throw(PluginError, 'config must be an object');
-    expect(factory.bind(factory, {}, '')).to.throw(PluginError, 'opts must be an object');
+  var invalidConfigTests = [
+    { it: 'Should fail on invalid config', config: '', message: 'config must be an object' },
+    { it: 'Should fail on invalid opts', opts: '', message: 'opts must be an object' },
+    { it: 'Should fail on an invalid src', config: { src: {} }, message: 'src must be a gulp glob' }
+  ];
+
+  invalidConfigTests.forEach(function(test) {
+    it(test.it, function() {
+      expect(factory.bind(null, test.config, test.opts)).to.throw(PluginError, test.message);
+    });
   });
 
   it('Should not modify the config or opts object', function() {
@@ -44,6 +51,16 @@ describe('Bower task', function() {
 
   it('Should install bower dependencies', function(done) {
     var stream = factory({ src: inpath }, { silent: true })();
+    stream.on('error', done);
+    stream.on('end', function() {
+      expect(dir(outpath)).to.exist;
+      done();
+    });
+    stream.resume();
+  });
+
+  it('Should accept a bower.json file as the src', function(done) {
+    var stream = factory({ src: inpath + '/bower.json' }, { silent: true })();
     stream.on('error', done);
     stream.on('end', function() {
       expect(dir(outpath)).to.exist;

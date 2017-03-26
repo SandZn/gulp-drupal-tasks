@@ -52,7 +52,8 @@ describe('Backstop task', function() {
     configs.forEach(function(config) {
       var task = factory(config);
       expect(task._config).to.eql({
-        src: null,
+        src: [],
+        dockerBin: null,
         junitGlob: null,
         artifactGlob: null,
         baseUrl: null
@@ -66,21 +67,23 @@ describe('Backstop task', function() {
     });
   });
 
-  it('Should fail on an invalid config or opts being passed', function() {
-    expect(factory.bind(factory, '')).to.throw(PluginError, 'config must be an object');
-    expect(factory.bind(factory, {}, '')).to.throw(PluginError, 'opts must be an object');
-    expect(factory.bind(null, {
-      src: {}
-    })).to.throw(PluginError, 'src must be a string pointing to the backstop configuration file, or null');
-    expect(factory.bind(null, {
-      junitGlob: {}
-    })).to.throw(PluginError, 'junitGlob must be a string glob, or null');
-    expect(factory.bind(null, {
-      artifactGlob: {}
-    })).to.throw(PluginError, 'artifactGlob must be a string glob, or null');
-    expect(factory.bind(null, {
-      baseUrl: {}
-    })).to.throw(PluginError, 'baseUrl must be a string');
+  var invalidConfigTests = [
+    { it: 'Should fail on invalid config', config: '', message: 'config must be an object' },
+    { it: 'Should fail on invalid opts', opts: '', message: 'opts must be an object' },
+    { it: 'Should fail on an invalid dockerBin', config: { dockerBin: {} }, message: 'dockerBin must be a string' },
+    { it: 'Should fail on an invalid src', config: { src: {} }, message: 'src must be a gulp glob' },
+    { it: 'Should fail on an invalid baseurl', config: { baseUrl: {} }, message: 'baseUrl must be a string' },
+    { it: 'Should fail on an invalid baseurl from opts', opts: { baseUrl: {} }, message: 'baseUrl must be a string' },
+    { it: 'Should fail on an invalid artifactGlob', config: { artifactGlob: {}, message: 'artifactGlob must be a string or array of strings' } },
+    { it: 'Should fail on an invalid junitGlob', config: { junitGlob: {}, message: 'junitGlob must be a string or array of strings' } },
+    { it: 'Should fail on an invalid artifactDir', opts: { artifactDir: {}, message: 'artifactDir must be a string' } },
+    { it: 'Should fail on an invalid junitDir', opts: { junitDir: {}, message: 'junitDir must be a string' } },
+  ];
+
+  invalidConfigTests.forEach(function(test) {
+    it(test.it, function() {
+      expect(factory.bind(null, test.config, test.opts)).to.throw(PluginError, test.message);
+    });
   });
 
   it('Should not modify the config or opts object', function() {
@@ -92,25 +95,20 @@ describe('Backstop task', function() {
   it('Should pass backstop when the screenshots match.', function(done) {
     var task = factory({
       src: path.join(inpath, 'backstop.js'),
-      baseUrl: 'http://' + ip.address() + ':9763'
-    }, { silent: true });
-    var stream = task();
-    stream.on('err', done);
-    stream.on('end', done);
-    stream.resume();
-  });
-
-  it('Should accept a baseUrl from opts', function(done) {
-    var task = factory({
-      src: path.join(inpath, 'backstop.js'),
-      baseUrl: 'http://127.0.0.1:1111',
+      junitGlob: path.join(inpath, 'out/xunit.xml'),
+      artifactGlob: path.join(inpath, 'out/{reports,comparisons}/**')
     }, {
       silent: true,
-      baseUrl: 'http://' + ip.address() + ':9763'
+      baseUrl: 'http://' + ip.address() + ':9763',
+      junitDir: path.join(outpath, 'moved/junit'),
+      artifactDir: path.join(outpath, 'moved/artifacts'),
     });
     var stream = task();
-    stream.on('error', done);
+    stream.on('err', done);
     stream.on('end', function() {
+      expect(file(path.join(outpath, 'moved/junit/xunit.xml'))).to.exist;
+      expect(dir(path.join(outpath, 'moved/artifacts/reports'))).to.exist;
+      expect(dir(path.join(outpath, 'moved/artifacts/comparisons'))).to.exist;
       done();
     });
     stream.resume();
@@ -119,12 +117,21 @@ describe('Backstop task', function() {
   it('Should fail when the screenshots do not match.', function(done) {
     var task = factory({
       src: path.join(inpath, 'backstop.js'),
-      baseUrl: 'http://' + ip.address() + ':9763/nomatch'
-    }, { silent: true });
+      baseUrl: 'http://' + ip.address() + ':9763/nomatch',
+      junitGlob: path.join(inpath, 'out/xunit.xml'),
+      artifactGlob: path.join(inpath, 'out/{reports,comparisons}/**')
+    }, {
+      silent: true,
+      junitDir: path.join(outpath, 'moved/junit'),
+      artifactDir: path.join(outpath, 'moved/artifacts'),
+    });
     var stream = task();
     stream.on('error', function(err) {
       expect(err).to.be.an.instanceOf(Error);
       expect(err.message).to.contain('Backstopjs exited with code 1');
+      expect(file(path.join(outpath, 'moved/junit/xunit.xml'))).to.exist;
+      expect(dir(path.join(outpath, 'moved/artifacts/reports'))).to.exist;
+      expect(dir(path.join(outpath, 'moved/artifacts/comparisons'))).to.exist;
       done();
     });
     stream.on('end', function() {
@@ -150,27 +157,16 @@ describe('Backstop task', function() {
     stream.resume();
   });
 
-  // This kind of breaks the one thing per test rule, but these tests are really
-  // slow.
-  it('Should copy junit files to the specified junit directory, and artifact files to the artifact directory', function(done) {
-    var task = factory({
+  it('Should throw an error on an invalid docker bin', function(done) {
+    var stream = factory({
       src: path.join(inpath, 'backstop.js'),
-      baseUrl: 'http://' + ip.address() + ':9763',
-      junitGlob: path.join(inpath, 'out/xunit.xml'),
-      artifactGlob: path.join(inpath, 'out/{reports,comparisons}/**')
-    }, {
-      junitDir: path.join(outpath, 'moved/junit'),
-      artifactDir: path.join(outpath, 'moved/artifacts'),
-      silent: true
-    });
-
-    var stream = task();
-    stream.on('error', done);
-    stream.on('end', function() {
-      expect(file(path.join(outpath, 'moved/junit/xunit.xml'))).to.exist;
-      expect(dir(path.join(outpath, 'moved/artifacts/reports'))).to.exist;
-      expect(dir(path.join(outpath, 'moved/artifacts/comparisons'))).to.exist;
+      dockerBin: '/some/nonexistent/path'
+    }, { silent: false })();
+    stream.on('error', function() {
       done();
+    });
+    stream.on('end', function() {
+      throw new Error('Task did not fail.');
     });
     stream.resume();
   });

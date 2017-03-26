@@ -24,12 +24,17 @@ describe('Composer task', function() {
     expect(task._config).to.eql({ src: './composer.json', bin: null });
   });
 
-  it('Should fail on an invalid config or opts being passed', function() {
-    expect(factory.bind(factory, '')).to.throw(PluginError, 'config must be an object');
-    expect(factory.bind(factory, {}, '')).to.throw(PluginError, 'opts must be an object');
-    expect(factory.bind(null, {
-      src: {}
-    })).to.throw(PluginError, 'src must be a string');
+  var invalidConfigTests = [
+    { it: 'Should fail on invalid config', config: '', message: 'config must be an object' },
+    { it: 'Should fail on invalid opts', opts: '', message: 'opts must be an object' },
+    { it: 'Should fail on an invalid src', config: { src: {} }, message: 'src must be a gulp glob' },
+    { it: 'Should fail on an invalid bin', config: { bin: {} }, message: 'bin must be a string' },
+  ];
+
+  invalidConfigTests.forEach(function(test) {
+    it(test.it, function() {
+      expect(factory.bind(null, test.config, test.opts)).to.throw(PluginError, test.message);
+    });
   });
 
   it('Should not modify the config or opts object', function() {
@@ -42,9 +47,22 @@ describe('Composer task', function() {
     // Use the invalid composer that does not have a name property,
     // because it skips a lot of network calls that way.
     var task = factory({
-      src: inpath + '/composer-invalid.json'
+      src: inpath + '/composer.json'
     }, { silent: true });
 
+    var stream = task();
+    stream.on('error', done);
+    stream.on('end', function() {
+      expect(dir(outpath)).to.exist;
+      done();
+    });
+    stream.resume();
+  });
+
+  it('Should allow passing a directory', function(done) {
+    var task = factory({
+      src: inpath
+    }, { silent: true });
     var stream = task();
     stream.on('error', done);
     stream.on('end', function() {
@@ -72,7 +90,7 @@ describe('Composer task', function() {
 
   it('Should fail for an invalid bin', function(done) {
     var task = factory({
-      src: inpath + '/composer-invalid.json',
+      src: inpath + '/composer.json',
       bin: inpath + '/nonexistent',
     }, { silent: true });
     var stream = task();

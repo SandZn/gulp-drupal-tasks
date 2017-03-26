@@ -45,9 +45,21 @@ describe('Phantomas Task', function() {
     expect(stream).to.be.an('object');
   });
 
-  it('Should fail on an invalid config or opts being passed', function() {
-    expect(factory.bind(factory, '')).to.throw(PluginError, 'config must be an object');
-    expect(factory.bind(factory, {}, '')).to.throw(PluginError, 'opts must be an object');
+  var invalidConfigTests = [
+    { it: 'Should fail on invalid config', config: '', message: 'config must be an object' },
+    { it: 'Should fail on invalid opts', opts: '', message: 'opts must be an object' },
+    { it: 'Should fail on an invalid bin', config: { bin: {} }, message: 'bin must be a string' },
+    { it: 'Should fail on an invalid src', config: { src: {} }, message: 'src must be a gulp glob' },
+    { it: 'Should fail on an invalid baseurl', config: { baseUrl: {} }, message: 'baseUrl must be a string' },
+    { it: 'Should fail on an invalid baseurl from opts', opts: { baseUrl: {} }, message: 'baseUrl must be a string' },
+    { it: 'Should fail on an invalid artifactGlob', config: { artifactGlob: {}, message: 'artifactGlob must be a string or array of strings' } },
+    { it: 'Should fail on an invalid artifactDir', opts: { artifactDir: {}, message: 'artifactDir must be a string' } },
+  ];
+
+  invalidConfigTests.forEach(function(test) {
+    it(test.it, function() {
+      expect(factory.bind(null, test.config, test.opts)).to.throw(PluginError, test.message);
+    });
   });
 
   it('Should use the default config', function() {
@@ -78,26 +90,15 @@ describe('Phantomas Task', function() {
     var outArtifacts = path.join(outpath, 'distartifacts');
     var stream = factory({
       src: path.join(inpath, 'phantomas.yaml'),
-      baseUrl: 'http://127.0.0.1:9763',
       artifactGlob: path.join(outpath, 'srcartifacts', '*'),
-    }, { silent: true,  artifactDir: outArtifacts })();
+    }, {
+      silent: true,
+      artifactDir: outArtifacts,
+      baseUrl: 'http://127.0.0.1:9763'
+    })();
     stream.on('error', done);
     stream.on('end', function() {
       expect(file(path.join(outArtifacts, 'homepage.har'))).to.exist;
-      done();
-    });
-    stream.resume();
-  });
-
-  it('Should accept a baseUrl from opts', function(done) {
-    var stream = factory({
-      src: path.join(inpath, 'phantomas.yaml'),
-      baseUrl: 'http://127.0.0.1:1111',
-    }, {
-      silent: true,
-      baseUrl: 'http://127.0.0.1:9763' })();
-    stream.on('error', done);
-    stream.on('end', function() {
       done();
     });
     stream.resume();
@@ -121,14 +122,16 @@ describe('Phantomas Task', function() {
     stream.resume();
   });
 
-  it('Should not fail if no artifact output is defined', function(done) {
+  it('Should throw an error on an invalid phantomas bin', function(done) {
     var stream = factory({
       src: path.join(inpath, 'phantomas.yaml'),
-      baseUrl: 'http://127.0.0.1:9763',
+      bin: '/some/nonexistent/path'
     }, { silent: true })();
-    stream.on('error', done);
-    stream.on('end', function() {
+    stream.on('error', function() {
       done();
+    });
+    stream.on('end', function() {
+      throw new Error('Task did not fail.');
     });
     stream.resume();
   });

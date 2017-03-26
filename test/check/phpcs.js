@@ -30,9 +30,10 @@ describe('PHPCS Task', function() {
     factory(cfg, opts);
   });
 
-  it('Should fail for an invalid file', function(done) {
+  it('Should use a configurable standard', function(done) {
     var stream = factory({
-      src: path.join(inpath, 'invalid.php')
+      src: path.join(inpath, 'valid.php'),
+      standard: path.join(inpath, 'phpcs.xml')
     }, { silent: true })();
     stream.on('error', function(err) {
       expect(err).to.be.instanceOf(PluginError);

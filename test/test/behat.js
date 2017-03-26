@@ -26,11 +26,6 @@ describe('Behat Task', function() {
     });
   });
 
-  it('Should fail on an invalid config or opts being passed', function() {
-    expect(factory.bind(factory, '')).to.throw(PluginError, 'config must be an object');
-    expect(factory.bind(factory, {}, '')).to.throw(PluginError, 'opts must be an object');
-  });
-
   var invalidConfigTests = [
     { it: 'Should fail on invalid config', config: '', message: 'config must be an object' },
     { it: 'Should fail on invalid opts', opts: '', message: 'opts must be an object' },
