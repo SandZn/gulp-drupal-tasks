@@ -46,7 +46,7 @@ describe('Config adapter', function() {
     it('Should configure the test:phpunit task', function() {
       expect(parsed.test.phpunit).to.eql({
         src: 'phpunit.xml.dist'
-      })
+      });
     });
 
     it('Should configure the test:behat task', function() {
