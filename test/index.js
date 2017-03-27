@@ -55,11 +55,13 @@ describe('Configured tasks', function() {
       'check:eslint',
       'check:phpcs',
       'check:phplint',
+      'check:watch',
       'test',
       'test:phpunit',
       'test:backstopjs',
       'test:behat',
       'test:phantomas',
+      'watch'
     ];
 
     it('Should have all tasks', function() {
