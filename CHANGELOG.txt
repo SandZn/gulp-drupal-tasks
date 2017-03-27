@@ -1,3 +1,4 @@
 Development
 -----------
 - Added test:phpunit task.
+- Added yarn.lock file (will not be used when this package is installed into scaffold)
