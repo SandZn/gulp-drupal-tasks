@@ -1,4 +1,10 @@
 Development
 -----------
+- Added --fix flag for check:eslint task.
+- Added check:watch to handle watching for syntax errors.
+- Added watch to handle watching files for build and syntax errors.
+
+1.0.0-rc4
+---------
 - Added test:phpunit task.
 - Added yarn.lock file (will not be used when this package is installed into scaffold)
