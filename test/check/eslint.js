@@ -3,6 +3,7 @@ var path = require('path');
 var factory = require('../../lib/check/eslint');
 var PluginError = require('gulp-util').PluginError;
 var rimraf = require('rimraf');
+var fs = require('fs');
 
 var chai = require('chai');
 var chaiFiles = require('chai-files');
@@ -87,11 +88,49 @@ describe('ESLint Task', function() {
   it('Passes configuration options through to eslint', function(done) {
     var stream = factory({
       src: path.join(inpath, 'fixture.js'),
-      rules: { 'no-extend-native': 0 },
     })();
 
     stream.on('error', done);
     stream.on('end', done);
+    stream.resume();
+  });
+
+  it('Should fix a file in place', function(done) {
+    var filepath = path.join(outpath, 'bad.js');
+
+    fs.mkdirSync(outpath);
+    fs.writeFileSync(filepath, 'console.log("test")');
+    var stream = factory({
+      src: filepath
+    }, { fix: true, silent: true })();
+    stream.on('error', done);
+    stream.on('end', function() {
+      var contents = fs.readFileSync(filepath);
+      expect(contents.toString()).to.equal('console.log(\'test\');\n');
+      done();
+    });
+    stream.resume();
+  });
+
+  it('Should still throw an error if a file cannot be fixed', function(done) {
+    var filepath = path.join(outpath, 'bad.js');
+
+    fs.mkdirSync(outpath);
+    fs.writeFileSync(filepath, 'var foo = true;\n');
+    fs.writeFileSync(outpath + '/.eslintrc', JSON.stringify({
+      rules: { 'no-unused-vars': 'error' }
+    }));
+    var stream = factory({
+      src: filepath,
+    }, { fix: true, silent: true })();
+    stream.on('error', function(err) {
+      expect(err.message).to.equal('Failed with 1 error');
+      expect(file(filepath)).to.contain('var foo = true;\n');
+      done();
+    });
+    stream.on('end', function() {
+      done(new Error('Error was expected but not found.'));
+    });
     stream.resume();
   });
 });
