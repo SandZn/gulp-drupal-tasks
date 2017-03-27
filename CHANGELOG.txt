@@ -1,5 +1,8 @@
 Development
 -----------
+
+1.0.0-rc5
+---------
 - Added --fix flag for check:eslint task.
 - Added check:watch to handle watching for syntax errors.
 - Added watch to handle watching files for build and syntax errors.
