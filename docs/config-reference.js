@@ -34,6 +34,11 @@
       // src is a gulp glob
       'src': jsCheck
     },
+    'phpunit': {
+      'src': 'path/to/phpunit.xml',
+      'bin': 'vendor/bin/phpunit',
+      'suite': null,
+    },
     'behat': {
       'configFile': 'behat.yml'
     },
