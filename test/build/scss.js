@@ -102,6 +102,24 @@ describe('SCSS Task', function() {
     stream.resume();
   });
 
+  it('Should concatenate files', function(done) {
+    var stream = factory({
+      src: path.join(inpath, '*.scss'),
+      concat: 'libs.css',
+      dest: outpath
+    })();
+    stream.on('error', done);
+    stream.on('end', function() {
+      var fixtureFile = file(path.join(outpath, 'fixture.css'));
+      var libsFile = file(path.join(outpath, 'libs.css'));
+      expect(fixtureFile).not.to.exist;
+      expect(libsFile).to.exist;
+      expect(libsFile).to.contain('.fixture1{');
+      expect(libsFile).to.contain('.fixture2{');
+      done();
+    });
+  });
+
   it('Should prefix properties', function(done) {
     var stream = factory({
       src: path.join(inpath, 'fixture.scss'),
