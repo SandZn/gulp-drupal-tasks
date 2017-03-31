@@ -1,5 +1,8 @@
 Development
 -----------
+
+1.0.0-rc6
+---------
 - Fix concat option for build:scss
 
 1.0.0-rc5
