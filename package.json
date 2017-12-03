@@ -20,7 +20,6 @@
     "chai-files": "^1.4.0",
     "eslint": "^3.14.1",
     "gulp-imagemin": "^3.1.1",
-    "ip": "^1.1.5",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "mocha-junit-reporter": "^1.13.0",
@@ -28,26 +27,16 @@
     "sinon": "^1.17.7"
   },
   "dependencies": {
-    "bower": "^1.8.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-concat": "^2.6.1",
     "gulp-csso": "^2.0.0",
-    "gulp-eslint": "^3.0.1",
     "gulp-help": "^1.6.1",
-    "gulp-if": "^2.0.2",
     "gulp-minify": "0.0.15",
-    "gulp-phpcs": "^1.4.0",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.4.0",
     "gulp-util": "^3.0.8",
-    "merge-stream": "^1.0.1",
-    "mkdir-recursive": "^0.3.0",
     "node-sass-tilde-importer": "0.0.4",
-    "npm-which": "^3.0.1",
-    "phantomas": "git+https://github.com/macbre/phantomas.git#ce863710ec8ef7402e0967d0be793819cdddd486",
-    "phplint": "^1.7.1",
-    "through2": "^2.0.3",
-    "which": "^1.2.12"
+    "through2": "^2.0.3"
   }
 }

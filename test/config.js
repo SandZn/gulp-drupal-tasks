@@ -19,58 +19,6 @@ describe('Config adapter', function() {
     var input = require('../fixtures/gulpconfig-v1.json');
     var parsed = configBuilder(input);
 
-    it('Should configure the install:bower task', function() {
-      expect(parsed.install.bower).to.eql({
-        src: './bower.json'
-      });
-    });
-
-    it('Should configure the check:phpcs task', function() {
-      expect(parsed.check.phpcs).to.eql({
-        src: '**.php',
-      });
-    });
-
-    it('Should configure the check:phplint task', function() {
-      expect(parsed.check.phplint).to.eql({
-        src: '**.php'
-      });
-    });
-
-    it('Should configure the check:eslint task', function() {
-      expect(parsed.check.eslint).to.eql({
-        src: '**.js'
-      });
-    });
-
-    it('Should configure the test:phpunit task', function() {
-      expect(parsed.test.phpunit).to.eql({
-        src: 'phpunit.xml.dist'
-      });
-    });
-
-    it('Should configure the test:behat task', function() {
-      expect(parsed.test.behat).to.eql({
-        configFile: 'behat.yml'
-      });
-    });
-
-    it('Should configure the test:backstop task', function() {
-      expect(parsed.test.backstopjs).to.eql({
-        baseUrl: 'http://example.com',
-        src: 'backstop/backstop.js',
-        junitGlob: 'backstop/**.xml',
-        artifactGlob: 'backstop/reports/**'
-      });
-    });
-
-    it('Should configure the test:phantomas task', function() {
-      expect(parsed.test.phantomas).to.eql({
-        baseUrl: 'http://example.com',
-        src: 'phantomas/phantomas.yml',
-      });
-    });
-
     it('Should configure the build:scss task', function() {
       expect(parsed.build.scss).to.eql({
         theme: {

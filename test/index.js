@@ -15,9 +15,6 @@ describe('Configured tasks', function() {
 
     var tasks = [
       'build',
-      'check',
-      'install',
-      'test',
       // These two are added by orchestrator/gulp-help.
       'help',
       'default'
@@ -39,9 +36,6 @@ describe('Configured tasks', function() {
     var tasks = [
       'help',
       'default',
-      'install',
-      'install:bower',
-      'install:composer',
       'build',
       'build:copy',
       'build:copy:theme',
@@ -50,17 +44,6 @@ describe('Configured tasks', function() {
       'build:scss',
       'build:scss:theme',
       'build:watch',
-      'check',
-      'check:composer',
-      'check:eslint',
-      'check:phpcs',
-      'check:phplint',
-      'check:watch',
-      'test',
-      'test:phpunit',
-      'test:backstopjs',
-      'test:behat',
-      'test:phantomas',
       'watch'
     ];
 

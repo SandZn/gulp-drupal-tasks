@@ -1,10 +1,5 @@
 (function() {
 
-  // Set up some common variables here that will be reused below.
-  var baseUrl = 'http://localhost:8888';
-  var phpCheck = '**.php';
-  var jsCheck = '**.js';
-
   /**
    * This is the sample configuration file for these tasks.
    *
@@ -16,42 +11,6 @@
     // The config version.  Right now there's only 1.
     'version': 1,
 
-    'bower': {
-      'src': './bower.json'
-    },
-    'composer': {
-      'src': './composer.json'
-    },
-    'phpcs': {
-      // src is a gulp glob
-      'src': phpCheck
-    },
-    'phplint': {
-      // src is a gulp glob
-      'src': phpCheck
-    },
-    'eslint': {
-      // src is a gulp glob
-      'src': jsCheck
-    },
-    'phpunit': {
-      'src': 'path/to/phpunit.xml',
-      'bin': 'vendor/bin/phpunit',
-      'suite': null,
-    },
-    'behat': {
-      'configFile': 'behat.yml'
-    },
-    'backstopjs': {
-      'src': 'backstop/backstop.js',
-      'baseUrl': baseUrl,
-      'artifactGlob': 'backstop/reports/**',
-      'junitGlob': 'backstop/**.xml'
-    },
-    'phantomas': {
-      'src': 'phantomas/phantomas.yml',
-      'baseUrl': baseUrl
-    },
     'scss': {
       'theme': {
         // src is a gulp glob
