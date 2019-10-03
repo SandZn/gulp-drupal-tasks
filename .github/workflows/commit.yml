@@ -15,7 +15,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
-        run: npm install
+        run: |
+          npm config set engine-strict true
+          npm install
         env:
           CI: true
       - name: Run Tests
