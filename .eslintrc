@@ -3,6 +3,9 @@
   "env": {
     "node": true
   },
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
   "rules": {
     "array-bracket-spacing": [2, "never"],
     "block-scoped-var": 2,
@@ -25,6 +28,7 @@
     "quotes": [2, "single", "avoid-escape"],
     "semi": [2, "always"],
     "keyword-spacing": 2,
-    "space-unary-ops": 2
+    "space-unary-ops": 2,
+    "no-undef": "error"
   }
 }
