@@ -1,6 +1,17 @@
 Development
 -----------
 
+3.0.0
+-----
+- Upgrade to gulp 4.x.
+- Remove deprecated gulp-util usage.
+- Remove deprecated gulp-help usage.
+- Remove unused `opts` from all individual tasks.
+
+2.0.0
+-----
+- Reduce tasks to only those necessary for static asset building.
+
 1.0.0-rc6
 ---------
 - Fix concat option for build:scss

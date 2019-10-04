@@ -4,7 +4,6 @@ var rimraf = require('rimraf');
 var path = require('path');
 var chai = require('chai');
 var chaiFiles = require('chai-files');
-var PluginError = require('gulp-util').PluginError;
 
 chai.use(chaiFiles);
 var expect = chai.expect;
@@ -19,24 +18,23 @@ describe('Javascript build task', function() {
 
   it('Should do nothing if it is called with an empty config', function() {
     var stream = factory()();
-    expect(stream).to.be.an('object');
+    expect(stream).to.be.an('undefined');
   });
 
-  it('Should fail on an invalid config or opts being passed', function() {
-    expect(factory.bind(factory, '')).to.throw(PluginError, 'config must be an object');
-    expect(factory.bind(factory, {}, '')).to.throw(PluginError, 'opts must be an object');
+  it('Should fail on an invalid config being passed', function() {
+    expect(factory.bind(factory, '')).to.throw(Error, 'config must be an object');
     expect(factory.bind(null, {
       src: [],
       min: ''
-    })).to.throw(PluginError, 'min must be a boolean');
+    })).to.throw(Error, 'min must be a boolean');
     expect(factory.bind(null, {
       src: [],
       maps: {}
-    })).to.throw(PluginError, 'maps must be a string or `false`');
+    })).to.throw(Error, 'maps must be a string or `false`');
     expect(factory.bind(null, {
       src: [],
       concat: {}
-    })).to.throw(PluginError, 'concat must be a string or `false`');
+    })).to.throw(Error, 'concat must be a string or `false`');
   });
 
   it('Should use the default config', function() {
@@ -48,13 +46,11 @@ describe('Javascript build task', function() {
       min: true,
       maps: './'
     });
-    expect(task._opts).to.eql({});
   });
 
-  it('Should not modify the config or opts object', function() {
+  it('Should not modify the config object', function() {
     var cfg = Object.freeze({});
-    var opts = Object.freeze({});
-    factory(cfg, opts);
+    factory(cfg);
   });
 
   it('Should add a _watch property if src is not empty', function() {

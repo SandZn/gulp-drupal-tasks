@@ -3,7 +3,6 @@ var path = require('path');
 var rimraf = require('rimraf');
 var chai = require('chai');
 var chaiFiles = require('chai-files');
-var PluginError = require('gulp-util').PluginError;
 
 chai.use(chaiFiles);
 var expect = chai.expect;
@@ -18,12 +17,11 @@ describe('SCSS Task', function() {
 
   it('Should do nothing if it is called with an empty config', function() {
     var stream = factory()();
-    expect(stream).to.be.an('object');
+    expect(stream).to.be.an('undefined');
   });
 
-  it('Should fail on an invalid config or opts being passed', function() {
-    expect(factory.bind(factory, '')).to.throw(PluginError, 'config must be an object');
-    expect(factory.bind(factory, {}, '')).to.throw(PluginError, 'opts must be an object');
+  it('Should fail on an invalid config being passed', function() {
+    expect(factory.bind(factory, '')).to.throw(Error, 'config must be an object');
   });
 
   it('Should use the default config', function() {
@@ -40,10 +38,9 @@ describe('SCSS Task', function() {
     expect(task._opts).to.eql(undefined);
   });
 
-  it('Should not modify the config or opts object', function() {
+  it('Should not modify the config object', function() {
     var cfg = Object.freeze({});
-    var opts = Object.freeze({});
-    factory(cfg, opts);
+    factory(cfg);
   });
 
   it('Should add a _watch property if src is not empty', function() {
@@ -61,15 +58,15 @@ describe('SCSS Task', function() {
     expect(factory.bind(null, {
       src: [],
       maps: {}
-    })).to.throw(PluginError);
+    })).to.throw(Error);
     expect(factory.bind(null, {
       src: [],
       prefix: '',
-    })).to.throw(PluginError);
+    })).to.throw(Error);
     expect(factory.bind(null, {
       src: [],
       sassOptions: ''
-    })).to.throw(PluginError);
+    })).to.throw(Error);
   });
 
   it('Should build SCSS files', function(done) {

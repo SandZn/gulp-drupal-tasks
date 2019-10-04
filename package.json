@@ -27,15 +27,13 @@
     "sinon": "^1.17.7"
   },
   "dependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-concat": "^2.6.1",
     "gulp-csso": "^2.0.0",
-    "gulp-help": "^1.6.1",
     "gulp-minify": "^3.1.0",
     "gulp-sass": "^3.1.0",
     "gulp-sourcemaps": "^2.4.0",
-    "gulp-util": "^3.0.8",
     "node-sass-tilde-importer": "0.0.4",
     "through2": "^2.0.3"
   }

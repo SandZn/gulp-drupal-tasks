@@ -1,9 +1,11 @@
 'use strict';
 
-var configAdapter = require('./lib/config');
-var builder = require('./lib');
+const configAdapter = require('./lib/config');
+const Registry = require('./lib');
 
-module.exports = function(gulp, inputConfig, opts) {
-  var config = configAdapter(inputConfig);
-  builder(gulp, config, opts);
+module.exports = class extends Registry {
+  constructor(config) {
+    super(configAdapter(config));
+  }
 };
+
