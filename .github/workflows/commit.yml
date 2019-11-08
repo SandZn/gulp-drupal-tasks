@@ -26,7 +26,7 @@ jobs:
           CI: true
       - name: Upload coverage
         if: success() && matrix.node-version == '10.x'
-        run: bash <(curl -s https://codecov.io/bash) -v -t $TOKEN -B $BRANCH -C $SHA -f ./coverage/clover.xml
+        run: bash <(curl -s https://codecov.io/bash) -t $TOKEN -B $BRANCH -C $SHA -f ./coverage/clover.xml
         env:
           TOKEN: "${{ secrets.CODECOV_TOKEN }}"
           BRANCH: "${{ github.ref }}"
