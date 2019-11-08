@@ -21,6 +21,14 @@ jobs:
         env:
           CI: true
       - name: Run Tests
-        run: npm test
+        run: "npx nyc --reporter=clover npm run test:unit"
         env:
           CI: true
+      - name: Upload coverage
+        if: success() && matrix.node-version == '10.x'
+        run: bash <(curl -s https://codecov.io/bash) -v -t $TOKEN -B $BRANCH -C $SHA -f ./coverage/clover.xml
+        env:
+          TOKEN: "${{ secrets.CODECOV_TOKEN }}"
+          BRANCH: "${{ github.ref }}"
+          SHA: "${{ github.sha }}"
+          SLUG: "${{ github.slug }}"

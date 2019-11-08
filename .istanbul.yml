@@ -1,3 +1,0 @@
-instrumentation:
-  default-excludes: false
-  excludes: ['test/**', '**/node_modules/**']
