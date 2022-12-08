@@ -16,6 +16,7 @@ jobs:
       - name: Release to NPM
         run: |
           npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+          echo "The version is: ${REF:10}"
           npm version --no-git-tag-version ${REF:10}
           npm publish
         env:
