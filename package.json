@@ -36,6 +36,7 @@
     "gulp-sass": "^5.0",
     "gulp-sourcemaps": "^2.4.0",
     "node-sass-tilde-importer": "0.0.4",
+    "sass": "^1.56.1",
     "through2": "^2.0.3"
   }
 }
