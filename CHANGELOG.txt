@@ -1,6 +1,10 @@
 Development
 -----------
 
+4.0.0
+-----
+- Upgrade to gulp 5.x.
+
 3.0.0
 -----
 - Upgrade to gulp 4.x.
