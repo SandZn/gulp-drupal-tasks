@@ -32,7 +32,7 @@ describe('SCSS Task', function() {
       concat: false,
       min: true,
       maps: './',
-      prefix: { browsers: 'last 2 versions' },
+      prefix: { browsersList: 'last 2 versions' },
       sassOptions: {}
     });
     expect(task._opts).to.eql(undefined);
