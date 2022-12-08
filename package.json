@@ -19,10 +19,10 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-files": "^1.4.0",
-    "eslint": "^6.5.1",
-    "gulp-imagemin": "^6.0.0",
-    "mocha": "^6.2.1",
-    "mocha-junit-reporter": "^1.23.1",
+    "eslint": "^6.8.0",
+    "gulp-imagemin": "^6.2.0",
+    "mocha": "^6.2.3",
+    "mocha-junit-reporter": "^1.23.3",
     "npm-run-all": "^4.1.5",
     "rimraf": "^2.5.4",
     "sinon": "^1.17.7"
