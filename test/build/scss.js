@@ -125,7 +125,7 @@ describe('SCSS Task', function() {
     stream.on('error', done);
     stream.on('end', function() {
       var cssFile = file(path.join(outpath, 'fixture.css'));
-      expect(cssFile).to.contain('-ms-user-select');
+      expect(cssFile).to.contain('-moz-user-select');
       done();
     });
     stream.resume();
