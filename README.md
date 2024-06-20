@@ -4,7 +4,7 @@ Gulp Drupal Tasks
 [![CircleCI](https://circleci.com/gh/LastCallMedia/gulp-drupal-tasks.svg?style=svg)](https://circleci.com/gh/LastCallMedia/gulp-drupal-tasks) 
 [![codecov](https://codecov.io/gh/LastCallMedia/gulp-drupal-tasks/branch/master/graph/badge.svg)](https://codecov.io/gh/LastCallMedia/gulp-drupal-tasks)
 
-This library provides a set of common Gulp tasks for working with PHP/Drupal. The goals are:
+Gulp Drupal Tasks is brought to you by your friends at [Last Call Media](https://www.lastcallmedia.com), this library provides a set of common Gulp tasks for working with PHP/Drupal. The goals are:
 
 1. Provide a single point of management for updating the Gulp tasks across all of LCM's Drupal builds.
 2. Have excellent test coverage to make sure everything (still) works.
